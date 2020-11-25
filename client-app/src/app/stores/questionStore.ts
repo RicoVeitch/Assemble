@@ -35,6 +35,10 @@ class QuestionStore {
     }
   }
 
+  @action loadQuestion = (id: string) => {
+    this.selectedQuestion = this.questions.get(id);
+  }
+
   @action createQuestion = async (question: IQuestion) => {
     try {
       await agent.Questions.create(question);
