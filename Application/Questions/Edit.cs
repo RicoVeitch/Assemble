@@ -5,6 +5,9 @@ using Domain;
 using MediatR;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using Application.Errors;
+using System.Net;
+using FluentValidation;
 
 namespace Application.Questions
 {
@@ -17,6 +20,17 @@ namespace Application.Questions
             public string Description { get; set; }
             public string Category { get; set; }
             public DateTime? Date { get; set; }
+        }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Title).NotEmpty();
+                RuleFor(x => x.Description).NotEmpty();
+                RuleFor(x => x.Category).NotEmpty();
+                RuleFor(x => x.Date).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -33,7 +47,7 @@ namespace Application.Questions
 
                 if (question == null)
                 {
-                    throw new Exception("Requested question to edit does not exist.");
+                    throw new RestException(HttpStatusCode.NotFound, new { question = "question not found" });
                 }
 
                 question.Title = request.Title ?? question.Title;

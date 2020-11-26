@@ -5,6 +5,8 @@ using Domain;
 using MediatR;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using Application.Errors;
+using System.Net;
 
 namespace Application.Questions
 {
@@ -29,7 +31,7 @@ namespace Application.Questions
 
                 if (question == null)
                 {
-                    throw new Exception("Requested question to delete does not exist.");
+                    throw new RestException(HttpStatusCode.NotFound, new { question = "question not found" });
                 }
 
                 _context.Remove(question);

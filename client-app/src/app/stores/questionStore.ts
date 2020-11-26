@@ -35,8 +35,24 @@ class QuestionStore {
     }
   }
 
-  @action loadQuestion = (id: string) => {
-    this.selectedQuestion = this.questions.get(id);
+  @action loadQuestion = async (id: string) => {
+    let question = this.questions.get(id);
+    if(question) {
+      this.selectedQuestion = question;
+    } else {
+      try {
+        question = await agent.Questions.details(id);
+        runInAction(() => {
+          this.questions.set(question.id, question);
+          this.selectQuestion = question;
+        })
+
+      } catch(error) {
+        console.log(error)
+      }
+    }
+   
+    // this.selectedQuestion = this.questions.get(id);
   }
 
   @action createQuestion = async (question: IQuestion) => {

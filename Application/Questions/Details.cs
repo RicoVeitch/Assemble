@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,11 @@ namespace Application.Questions
             public async Task<Question> Handle(Query request, CancellationToken cancellationToken)
             {
                 var question = await _context.Questions.FindAsync(request.Id);
+
+                if (question == null)
+                {
+                    throw new RestException(HttpStatusCode.NotFound, new { question = "question not found" });
+                }
 
                 return question;
             }

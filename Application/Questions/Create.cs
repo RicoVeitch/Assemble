@@ -5,6 +5,7 @@ using Domain;
 using MediatR;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 
 namespace Application.Questions
 {
@@ -17,6 +18,17 @@ namespace Application.Questions
             public string Description { get; set; }
             public string Category { get; set; }
             public DateTime Date { get; set; }
+        }
+        // validator for the command class. Sits inbetween command and handler for mediator.
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Title).NotEmpty();
+                RuleFor(x => x.Description).NotEmpty();
+                RuleFor(x => x.Category).NotEmpty();
+                RuleFor(x => x.Date).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Command>
