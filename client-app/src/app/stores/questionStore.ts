@@ -1,6 +1,7 @@
 
-import { action, computed, configure, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { createContext, SyntheticEvent } from 'react';
+import { action, computed, configure, makeObservable, observable, runInAction } from 'mobx';
+import { createContext } from 'react';
+import { toast } from 'react-toastify';
 import agent from '../api/agent';
 import { IQuestion } from '../models/question';
 
@@ -31,6 +32,7 @@ class QuestionStore {
         });
       });
     } catch(error) {
+      toast.error("Issue loading questions");
       console.log(error)
     }
   }
@@ -48,6 +50,7 @@ class QuestionStore {
         })
 
       } catch(error) {
+        toast.error("Issue loading question");
         console.log(error)
       }
     }
@@ -63,6 +66,7 @@ class QuestionStore {
         this.edditing = false;
       });
     } catch(error) {
+      toast.error("Issue creating question");
       console.log(error);
       runInAction(() => {
         this.edditing = false;
@@ -72,8 +76,8 @@ class QuestionStore {
 
   @action editQuestion = async (editedQuestion: IQuestion) => {
     try {
-      console.log(editedQuestion);
-      console.log(this.selectedQuestion);
+      // console.log(editedQuestion);
+      // console.log(this.selectedQuestion);
       editedQuestion.id = this.selectedQuestion!.id;
       await agent.Questions.edit(editedQuestion)
       runInAction(() => {
@@ -83,6 +87,7 @@ class QuestionStore {
       await this.loadQuestions();
     } catch(error) {
       console.log(error);
+      toast.error("Issue editting question");
     }
   }
 
@@ -94,7 +99,8 @@ class QuestionStore {
         this.deselectQuestion();
       });
     } catch(error) {
-      console.log(error)
+      console.log(error);
+      toast.error("Issue deleting question");
     }
   }
 

@@ -14,6 +14,7 @@ export const NavBar: React.FC = () => {
         <Menu.Item header as={Link} to={'/'} name='Questions' />
         <Menu.Item>
           <Button onClick={setEdditing} positive content='Create Activity' />
+          {/* <Button as={Link} to={'/manage'} positive content='Create Activity' /> */}
         </Menu.Item>
       </Container>
     </Menu>

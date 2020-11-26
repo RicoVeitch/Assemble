@@ -7,6 +7,7 @@ import { Route, Router } from 'react-router-dom';
 import QuestionDetails from '../../features/questions/details/QuestionDetails';
 import Notfound from '../common/Notfound';
 import { ToastContainer } from 'react-toastify';
+import QuestionForm from '../../features/questions/form/QuestionForm';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         {/* <Route path='/home' component={QuestionDashboard} /> */}
         <Route path='/:id' component={QuestionDetails} />
         <Route path='/notfound' component={Notfound} />
+        <Route path='/manage' component={QuestionForm} />
         {/* <QuestionDashboard /> */}
       </Container>
     </>
