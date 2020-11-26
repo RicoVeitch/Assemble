@@ -25,7 +25,7 @@ const QuestionListItem: React.FC<{ question: IQuestion }> = ({ question }) => {
       <Item.Group>
         <Item.Extra>
           <Label floated='left'>{question.category}</Label>
-          <Button
+          {/* <Button
             onClick={() => selectQuestion(question)}
             floated='right'
             content='Edit'
@@ -38,7 +38,7 @@ const QuestionListItem: React.FC<{ question: IQuestion }> = ({ question }) => {
             floated='right'
             content='Delete'
             color='red'
-          />
+          /> */}
         </Item.Extra>
       </Item.Group>
 

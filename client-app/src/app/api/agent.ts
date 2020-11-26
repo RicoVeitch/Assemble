@@ -39,7 +39,7 @@ const Questions = {
   list: (): Promise<IQuestion[]> => requests.get('/Questions'),
   create: (question: IQuestion) => requests.post('/Questions', question),
   edit: (question: IQuestion) => requests.put(`/Questions/${question.id}`, question),
-  delete: (question: IQuestion) => requests.del(`/Questions/${question.id}`),
+  delete: (id: string) => requests.del(`/Questions/${id}`),
   details: (id: string) => requests.get(`/Questions/${id}`)
 }
 

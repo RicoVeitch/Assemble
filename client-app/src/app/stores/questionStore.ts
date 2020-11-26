@@ -91,11 +91,11 @@ class QuestionStore {
     }
   }
 
-  @action deleteQuestion = async (question: IQuestion) => {
+  @action deleteQuestion = async (id: string) => {
     try {
-      await agent.Questions.delete(question);
+      await agent.Questions.delete(id);
       runInAction(() => {
-        this.questions.delete(question.id);
+        this.questions.delete(id);
         this.deselectQuestion();
       });
     } catch(error) {
@@ -108,8 +108,8 @@ class QuestionStore {
     this.edditing = !this.edditing;
   }
 
-  @action selectQuestion = (selectedQuestion: IQuestion) => {
-    this.selectedQuestion = selectedQuestion;
+  @action selectQuestion = (id: string) => {
+    this.selectedQuestion = this.questions.get(id);
     this.edditing = true;
   }
 

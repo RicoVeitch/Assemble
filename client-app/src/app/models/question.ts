@@ -7,10 +7,11 @@ export interface IQuestion {
 }
 
 export const categories = [
-  { key: 'biology', text: 'biology', value: 'biology' },
-  { key: 'theology', text: 'theology', value: 'theology' },
+  { key: 'Biology', text: 'Biology', value: 'Biology' },
+  { key: 'Theology', text: 'Theology', value: 'Theology' },
   { key: 'Computer Science', text: 'Computer Science', value: 'Computer Science' },
-  { key: 'hardware', text: 'hardware', value: 'hardware' },
-  { key: 'economics', text: 'economics', value: 'economics' },
-  { key: 'history', text: 'history', value: 'history' }
+  { key: 'hardware', text: 'hardware', value: 'Hardware' },
+  { key: 'Economics', text: 'Economics', value: 'Economics' },
+  { key: 'History', text: 'History', value: 'History' },
+  { key: 'English', text: 'English', value: 'English' }
 ];

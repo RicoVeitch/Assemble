@@ -8,12 +8,14 @@ import QuestionDetails from '../../features/questions/details/QuestionDetails';
 import Notfound from '../common/Notfound';
 import { ToastContainer } from 'react-toastify';
 import QuestionForm from '../../features/questions/form/QuestionForm';
+import ModalContainer from '../common/modals/ModalContainer';
 
 function App() {
   return (
     <>
       <ToastContainer position='top-right' />
       <NavBar />
+      <ModalContainer />
       <Container style={{ marginTop: '8em' }}>
         <Route exact path='/' component={QuestionDashboard} />
         {/* <Route path='/home' component={QuestionDashboard} /> */}
