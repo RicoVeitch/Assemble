@@ -18,6 +18,7 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
   const { openModal } = modalStore;
 
   useEffect(() => {
+    console.log(match.params.id);
     loadQuestion(match.params.id)
   }, [loadQuestion, match.params.id]);
 

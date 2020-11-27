@@ -46,7 +46,7 @@ class QuestionStore {
         question = await agent.Questions.details(id);
         runInAction(() => {
           this.questions.set(question.id, question);
-          this.selectQuestion = question;
+          this.selectedQuestion = question;
         })
 
       } catch(error) {
@@ -54,8 +54,6 @@ class QuestionStore {
         console.log(error)
       }
     }
-   
-    // this.selectedQuestion = this.questions.get(id);
   }
 
   @action createQuestion = async (question: IQuestion) => {
