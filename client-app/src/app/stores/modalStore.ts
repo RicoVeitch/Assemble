@@ -1,8 +1,11 @@
 import { action, makeObservable, observable } from "mobx";
-import { createContext } from "react";
+import { RootStore } from "./rootStore";
+// import { createContext } from "react";
 
-class ModalStore {
-  constructor() {
+export default class ModalStore {
+  rootStore: RootStore;
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
     makeObservable(this);
   }
 
@@ -17,10 +20,10 @@ class ModalStore {
 }
 
 @action closeModal = () => {
-    this.modal.open = false;
-    this.modal.body = null;
+  this.modal.open = false;
+  this.modal.body = null;
 }
 
 }
 
-export default createContext(new ModalStore());
+// export default createContext(new ModalStore());

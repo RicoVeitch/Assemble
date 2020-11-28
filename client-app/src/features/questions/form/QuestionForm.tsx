@@ -3,15 +3,14 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form, Grid, Segment } from 'semantic-ui-react'
 import { v4 as uuid } from 'uuid';
 import { categories, IQuestion } from '../../../app/models/question';
-import QuestionStore from '../../../app/stores/questionStore';
-import ModalStore from '../../../app/stores/modalStore';
 import { Form as FinalForm, Field } from 'react-final-form';
 import TextInput from '../../../app/common/form/TextInput';
 import TextAreaInput from '../../../app/common/form/TextAreaInput';
 import CategoryInput from '../../../app/common/form/CategoryInput';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
-import { set } from 'mobx';
-import { RouteComponentProps } from 'react-router-dom';
+// import { set } from 'mobx';
+// import { RouteComponentProps } from 'react-router-dom';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const validator = combineValidators({
   title: isRequired({ message: 'The event title is required' }),
@@ -30,11 +29,9 @@ interface IProps {
 
 const QuestionForm: React.FC<IProps> = ({ id }) => {
   console.log(id);
-  const questionStore = useContext(QuestionStore);
-  const { createQuestion, setEdditing, selectedQuestion, editQuestion } = questionStore;
-
-  const modalStore = useContext(ModalStore);
-  const { closeModal } = modalStore;
+  const rootStore = useContext(RootStoreContext);
+  const { createQuestion, setEdditing, selectedQuestion, editQuestion } = rootStore.questionStore;
+  const { closeModal } = rootStore.modalStore;
 
   const [question, setQuestion] = useState<IQuestion>({
     id: '',
@@ -64,10 +61,6 @@ const QuestionForm: React.FC<IProps> = ({ id }) => {
   //   const { name, value } = event.currentTarget;
   //   setQuestion({ ...question, [name]: value });
   // };
-
-  const handleChange = () => {
-    console.log('changed');
-  }
 
   return (
     <Grid>

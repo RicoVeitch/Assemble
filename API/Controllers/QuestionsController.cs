@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Application.Questions;
 using Microsoft.AspNetCore.Authorization;
-
+// [Authorize]
 namespace API.Controllers
 {
     [ApiController]
@@ -20,7 +20,6 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<List<Question>>> List()
         {
             return await _mediator.Send(new List.Query());

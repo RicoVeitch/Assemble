@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import QuestionDashboard from '../../features/questions/dashboard/QuestionDashboard';
 // import 'semantic-ui-css/semantic.min.css'
-import { NavBar } from '../../features/nav/navBar';
+// import  NavBar from '../../features/nav/NavBar';
 import { Container } from 'semantic-ui-react';
 import { Route, Router } from 'react-router-dom';
 import QuestionDetails from '../../features/questions/details/QuestionDetails';
@@ -9,8 +9,21 @@ import Notfound from '../common/Notfound';
 import { ToastContainer } from 'react-toastify';
 import QuestionForm from '../../features/questions/form/QuestionForm';
 import ModalContainer from '../common/modals/ModalContainer';
+import NavBar from '../../features/nav/NavBar';
+import { RootStoreContext } from '../stores/rootStore';
 
 function App() {
+  const rootStore = useContext(RootStoreContext);
+  const { token, getCurrentUser } = rootStore.userStore;
+
+  useEffect(() => {
+    if (token) {
+      // get current user
+      getCurrentUser();
+    } else {
+      // loading screen
+    }
+  })
   return (
     <>
       <ToastContainer position='top-right' />

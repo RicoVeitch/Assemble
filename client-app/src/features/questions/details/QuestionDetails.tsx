@@ -5,17 +5,16 @@ import { Button, Container, Grid, Header } from 'semantic-ui-react'
 import QuestionStore from '../../../app/stores/questionStore';
 import ModalStore from '../../../app/stores/modalStore';
 import QuestionForm from '../form/QuestionForm';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 interface DetailParams {
   id: string;
 }
 
 const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match }) => {
-  const questionStore = useContext(QuestionStore);
-  const { selectedQuestion, loadQuestion, setEdditing, deleteQuestion, edditing } = questionStore;
-
-  const modalStore = useContext(ModalStore);
-  const { openModal } = modalStore;
+  const rootStore = useContext(RootStoreContext);
+  const { selectedQuestion, loadQuestion, setEdditing, deleteQuestion, edditing } = rootStore.questionStore;
+  const { openModal } = rootStore.modalStore;
 
   useEffect(() => {
     console.log(match.params.id);

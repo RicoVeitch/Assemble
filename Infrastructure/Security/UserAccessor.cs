@@ -7,8 +7,8 @@ namespace Infrastructure.Security
 {
     public class UserAccessor : IUserAccessor
     {
-        private readonly HttpContextAccessor _httpContextAccessor;
-        public UserAccessor(HttpContextAccessor httpContextAccessor)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserAccessor(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
 

@@ -1,14 +1,16 @@
 
 import { action, computed, configure, makeObservable, observable, runInAction } from 'mobx';
-import { createContext } from 'react';
 import { toast } from 'react-toastify';
 import agent from '../api/agent';
 import { IQuestion } from '../models/question';
+import { RootStore } from './rootStore';
 
 // configure({enforceActions: 'always'});
 
-class QuestionStore {
-  constructor() {
+export default class QuestionStore {
+  rootStore: RootStore;
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
     makeObservable(this);
   }
 
@@ -118,4 +120,4 @@ class QuestionStore {
   
 }
 
-export default createContext(new QuestionStore());
+// export default createContext(new QuestionStore());

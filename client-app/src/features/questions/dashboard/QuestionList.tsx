@@ -3,10 +3,11 @@ import QuestionListItem from './QuestionListItem'
 import QuestionStore from '../../../app/stores/questionStore';
 import { observer } from 'mobx-react-lite';
 import { Item } from 'semantic-ui-react';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const QuestionList = () => {
-  const questionStore = useContext(QuestionStore);
-  const { loadQuestions, questions, activitiesByDate } = questionStore;
+  const rootStore = useContext(RootStoreContext);
+  const { loadQuestions, questions, activitiesByDate } = rootStore.questionStore;
 
   useEffect(() => {
     loadQuestions();

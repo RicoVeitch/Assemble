@@ -2,10 +2,20 @@ import axios, { AxiosResponse } from 'axios';
 import { IQuestion } from '../models/question';
 import {history} from '../..';
 import { toast } from 'react-toastify';
+import { IUser, IUserFormValues } from '../models/user';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
 const responseBody = (response: AxiosResponse) => response.data;
+
+axios.interceptors.request.use((config) => {
+  // console.log(config);
+  const token = window.localStorage.getItem('jwt');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+}, error => {
+  return Promise.reject(error);
+})
 
 axios.interceptors.response.use(undefined, error => {
   const {status} = error.response;
@@ -26,13 +36,6 @@ const requests = {
     post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
     put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
     del: (url: string) => axios.delete(url).then(responseBody),
-    // postForm: (url: string, file: Blob) => {
-    //   let formData = new FormData();
-    //   formData.append('File', file);
-    //   return axios.post(url, formData, {
-    //       headers: {'Content-type': 'multipart/form-data'}
-    //   }).then(responseBody)
-  // } 
 };
 
 const Questions = {
@@ -43,6 +46,13 @@ const Questions = {
   details: (id: string) => requests.get(`/Questions/${id}`)
 }
 
+const Users = {
+  login: (user: IUserFormValues): Promise<IUser> =>  requests.post('/User/login', user),
+  register: (user: IUserFormValues): Promise<IUser> => requests.post('/User/register', user),
+  getCurrentUser: () : Promise<IUser> => requests.get('/User')
+}
+
 export default {
   Questions,
+  Users,
 };

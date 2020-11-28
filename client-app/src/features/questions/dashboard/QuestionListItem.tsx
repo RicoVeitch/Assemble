@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import { Button, Icon, Item, Label, List, Segment } from 'semantic-ui-react'
 import { IQuestion } from '../../../app/models/question'
 import QuestionStore from '../../../app/stores/questionStore';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const QuestionListItem: React.FC<{ question: IQuestion }> = ({ question }) => {
-  const questionStore = useContext(QuestionStore);
-  const { selectQuestion, deleteQuestion } = questionStore;
+  const rootStore = useContext(RootStoreContext);
+  const { selectQuestion, deleteQuestion } = rootStore.questionStore;
   return (
     <Segment clearing>
       <Item.Group divided>
