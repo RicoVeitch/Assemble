@@ -1,6 +1,6 @@
-namespace Application.User
+namespace Application.Users
 {
-    public class AppUserDto
+    public class UserDto
     {
         public string DisplayName { get; set; }
         public string Token { get; set; }

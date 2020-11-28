@@ -9,20 +9,20 @@ namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
+        public static async Task SeedData(DataContext context, UserManager<User> userManager)
         {
             if (!userManager.Users.Any())
             {
-                var users = new List<AppUser>
+                var users = new List<User>
                 {
-                    new AppUser
+                    new User
                     {
                         DisplayName = "Joe",
                         UserName = "joe",
                         Email = "joe@test.com"
                     },
 
-                    new AppUser
+                    new User
                     {
                         DisplayName = "Bob",
                         UserName = "bob",

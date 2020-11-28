@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Persistence
 {
-    public class DataContext : IdentityDbContext<AppUser> // adds entity for AppUser automatically
+    public class DataContext : IdentityDbContext<User> // adds entity for User automatically
     {
         public DataContext(DbContextOptions options) : base(options)
         {
@@ -15,7 +15,7 @@ namespace Persistence
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder); // gives pk to AppUser
+            base.OnModelCreating(builder); // gives pk to User
         }
 
     }
