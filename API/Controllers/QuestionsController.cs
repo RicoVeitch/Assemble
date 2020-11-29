@@ -32,12 +32,14 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Unit>> Create(Create.Command command)
         {
             return await _mediator.Send(command);
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command command)
         {
             command.Id = id;
@@ -45,7 +47,8 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Unit>> Delete(Guid id)
+        [Authorize]
+        public async Task<ActionResult<Unit>> Delete(string id)
         {
             return await _mediator.Send(new Delete.Command { Id = id });
         }

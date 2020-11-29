@@ -17,17 +17,11 @@ namespace Persistence
                 {
                     new User
                     {
-                        DisplayName = "Joe",
-                        UserName = "joe",
-                        Email = "joe@test.com"
-                    },
-
-                    new User
-                    {
+                        Id = "a",
                         DisplayName = "Bob",
                         UserName = "bob",
                         Email = "bob@test.com"
-                    }
+                    },
                 };
 
                 foreach (var user in users)
@@ -37,35 +31,35 @@ namespace Persistence
             }
 
             // seed question if empty.
-            if (!context.Questions.Any())
-            {
-                var questions = new List<Question>
-                {
-                    new Question
-                    {
-                        Title = "Title 1",
-                        Description = "Desc 1",
-                        Category = "Science",
-                        Date = DateTime.Now
-                    },
-                    new Question
-                    {
-                        Title = "Title 2",
-                        Description = "Desc 2",
-                        Category = "English",
-                        Date = DateTime.Now
-                    },
-                    new Question
-                    {
-                        Title = "Title 3",
-                        Description = "Desc 3",
-                        Category = "History",
-                        Date = DateTime.Now
-                    },
-                };
-                context.Questions.AddRange(questions);
-                context.SaveChanges();
-            }
+            // if (!context.Questions.Any())
+            // {
+            //     var questions = new List<Question>
+            //     {
+            //         new Question
+            //         {
+            //             Title = "Title 1",
+            //             Description = "Desc 1",
+            //             Category = "Science",
+            //             Date = DateTime.Now,
+            //         },
+            //         new Question
+            //         {
+            //             Title = "Title 2",
+            //             Description = "Desc 2",
+            //             Category = "English",
+            //             Date = DateTime.Now,
+            //         },
+            //         new Question
+            //         {
+            //             Title = "Title 3",
+            //             Description = "Desc 3",
+            //             Category = "History",
+            //             Date = DateTime.Now
+            //         },
+            //     };
+            //     context.Questions.AddRange(questions);
+            //     context.SaveChanges();
+            // }
         }
     }
 }

@@ -4,6 +4,7 @@ export interface IQuestion {
   description: string;
   category: string;
   date: string;
+  // Username: string
 }
 
 export const categories = [

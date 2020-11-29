@@ -7,6 +7,8 @@ using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Application.Errors;
 using System.Net;
+using Application.Interfaces;
+using System.Linq;
 
 namespace Application.Questions
 {
@@ -14,14 +16,16 @@ namespace Application.Questions
     {
         public class Command : IRequest
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _context = context;
             }
 

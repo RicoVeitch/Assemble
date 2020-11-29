@@ -6,6 +6,7 @@ using MediatR;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
+using Application.Interfaces;
 
 namespace Application.Questions
 {
@@ -13,7 +14,7 @@ namespace Application.Questions
     {
         public class Command : IRequest
         {
-            public Guid Id { get; set; }
+            public string Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
             public string Category { get; set; }
@@ -34,13 +35,17 @@ namespace Application.Questions
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
                 _context = context;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername()); // get currently logged in usery
+
                 var question = new Question
                 {
                     Id = request.Id,
@@ -50,11 +55,16 @@ namespace Application.Questions
                     Date = request.Date,
                 };
 
-                _context.Questions.Add(question);
+                user.Questions.Add(question);
+                // _context.Questions.Add(question);
 
                 var success = await _context.SaveChangesAsync() > 0;
 
-                if (success) return Unit.Value;
+                // Users.CurrentUser
+
+
+                // if (success) return Unit.Value;
+                return Unit.Value;
 
                 throw new Exception("Error in saving changes");
             }
