@@ -7,6 +7,6 @@ namespace Domain
     {
         public string DisplayName { get; set; }
         public virtual ICollection<Question> Questions { get; set; }
-        // public virtual ICollection<Answer> Answers { get; set; }
+        public virtual ICollection<Answer> Answers { get; set; }
     }
 }

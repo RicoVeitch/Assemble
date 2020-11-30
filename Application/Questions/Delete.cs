@@ -1,14 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Domain;
 using MediatR;
 using Persistence;
-using Microsoft.EntityFrameworkCore;
 using Application.Errors;
 using System.Net;
 using Application.Interfaces;
-using System.Linq;
 
 namespace Application.Questions
 {
