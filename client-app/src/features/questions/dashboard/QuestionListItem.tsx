@@ -1,14 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
-import { Button, Icon, Item, Label, List, Segment } from 'semantic-ui-react'
+import { Item, Label, Segment } from 'semantic-ui-react'
 import { IQuestion } from '../../../app/models/question'
-import QuestionStore from '../../../app/stores/questionStore';
-import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const QuestionListItem: React.FC<{ question: IQuestion }> = ({ question }) => {
-  const rootStore = useContext(RootStoreContext);
-  const { selectQuestion, deleteQuestion } = rootStore.questionStore;
   return (
     <Segment clearing>
       <Item.Group divided>
@@ -26,20 +22,6 @@ const QuestionListItem: React.FC<{ question: IQuestion }> = ({ question }) => {
       <Item.Group>
         <Item.Extra>
           <Label floated='left'>{question.category}</Label>
-          {/* <Button
-            onClick={() => selectQuestion(question)}
-            floated='right'
-            content='Edit'
-            color='blue'
-          />
-          <Button
-            // name={activity.id}
-            // loading={target === activity.id && submitting}
-            onClick={() => deleteQuestion(question)}
-            floated='right'
-            content='Delete'
-            color='red'
-          /> */}
         </Item.Extra>
       </Item.Group>
 

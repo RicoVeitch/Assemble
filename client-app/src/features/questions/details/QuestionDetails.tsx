@@ -12,11 +12,13 @@ interface DetailParams {
 
 const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match }) => {
   const rootStore = useContext(RootStoreContext);
-  const { selectedQuestion, loadQuestion, deleteQuestion } = rootStore.questionStore;
+  const { selectedQuestion, loadQuestion, deleteQuestion, deselectQuestion } = rootStore.questionStore;
   const { openModal } = rootStore.modalStore;
+  const { deleteAnswer } = rootStore.answerStore;
 
   useEffect(() => {
     loadQuestion(match.params.id);
+    return deselectQuestion;
   }, [loadQuestion, match.params.id]);
 
   return (
@@ -44,22 +46,24 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
           Answers
         </Header>
         <Segment>
-          {selectedQuestion && selectedQuestion.answers && selectedQuestion.answers.map((answer) => (
-            <Comment style={{ marginBottom: '3em' }}>
+          {selectedQuestion && selectedQuestion.answers && selectedQuestion.answers.map(({ id, displayName, message, createdAt }) => (
+            <Comment key={id} style={{ marginBottom: '3em' }}>
               <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
               <Comment.Content>
-                <Comment.Author as='a'>Matt</Comment.Author>
+                <Comment.Author as='a'>{displayName}</Comment.Author>
                 <Comment.Metadata>
-                  <span>Today at 5:42PM</span>
+                  <span>{createdAt}</span>
                 </Comment.Metadata>
-                <Comment.Text>{answer.message}</Comment.Text>
+                <Comment.Text>{message}</Comment.Text>
                 <Comment.Actions>
                   <a>Reply</a>
                 </Comment.Actions>
+                <Button size='mini' color='red' floated='right' onClick={() => deleteAnswer(id)}>Delete</Button>
+                <Button size='mini' floated='right' onClick={() => openModal(<AnswerForm question={selectedQuestion} message={message} answerId={id} />)}>Edit</Button>
               </Comment.Content>
             </Comment>
           ))}
-          <AnswerForm />
+          {selectedQuestion && <AnswerForm question={selectedQuestion} />}
         </Segment>
       </Comment.Group>
     </Fragment>

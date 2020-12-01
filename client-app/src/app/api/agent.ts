@@ -50,7 +50,7 @@ const Questions = {
 const Answers = {
   list: (): Promise<IAnswer[]> => requests.get('/Answer'),
   create: (answer: IAnswer) => requests.post('/Answer', answer),
-  edit: (answer: IAnswer) => requests.put(`/Answer/${answer.id}`, answer),
+  edit: (id: string, answer: any) => requests.put(`/Answer/${id}`, answer),
   delete: (id: string) => requests.del(`/Answer/${id}`),
 }
 

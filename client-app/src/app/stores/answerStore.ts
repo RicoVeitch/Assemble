@@ -12,9 +12,30 @@ export default class QuestionStore {
 
   @action addAnswer = async (answer: IAnswer) => {
     try {
+      console.log(answer);
       await agent.Answers.create(answer);
+      // this.rootStore.questionStore.selectedQuestion?.answers.push(answer);
+      // const questionId = answer.questionId;
+      // this.rootStore.questionStore.questions.get(questionId).answers.add(answer);
     } catch(error) {
       throw error;
     }
   }
+
+  @action deleteAnswer = async (id: string) => {
+    try {
+      await agent.Answers.delete(id);
+    } catch(error) {
+      throw error;
+    }
+  }
+
+  @action editAnswer = async (id: string, message: any) => {
+    try {
+      await agent.Answers.edit(id, message);
+    } catch(error) {
+      throw error;
+    }
+  }
+
 }

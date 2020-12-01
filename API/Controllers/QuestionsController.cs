@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<QuestionDto>> Details(Guid id)
+        public async Task<ActionResult<QuestionDto>> Details(string id)
         {
             return await _mediator.Send(new Details.Query { Id = id });
         }
@@ -39,7 +39,7 @@ namespace API.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command command)
+        public async Task<ActionResult<Unit>> Edit(string id, Edit.Command command)
         {
             command.Id = id;
             return await _mediator.Send(command);

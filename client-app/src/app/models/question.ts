@@ -6,6 +6,7 @@ export interface IQuestion {
   description: string;
   category: string;
   date: string;
+  asked?: boolean;
   answers: IAnswer[];
   // Username: string
 }

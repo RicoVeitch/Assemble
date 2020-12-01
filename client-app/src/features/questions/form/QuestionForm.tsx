@@ -56,6 +56,7 @@ const QuestionForm: React.FC<IProps> = ({ id }) => {
       let newQuestion: IQuestion = { ...values, id: uuid(), date: new Date().toJSON() };
       createQuestion(newQuestion);
     }
+    closeModal();
 
   };
   // const handleInputChange = (event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {

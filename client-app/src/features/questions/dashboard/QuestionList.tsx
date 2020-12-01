@@ -1,13 +1,12 @@
 import React, { Fragment, useContext, useEffect } from 'react'
 import QuestionListItem from './QuestionListItem'
-import QuestionStore from '../../../app/stores/questionStore';
 import { observer } from 'mobx-react-lite';
 import { Item } from 'semantic-ui-react';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const QuestionList = () => {
   const rootStore = useContext(RootStoreContext);
-  const { loadQuestions, questions, activitiesByDate } = rootStore.questionStore;
+  const { loadQuestions, activitiesByDate } = rootStore.questionStore;
 
   useEffect(() => {
     loadQuestions();
