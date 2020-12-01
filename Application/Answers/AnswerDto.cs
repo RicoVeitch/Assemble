@@ -1,13 +1,13 @@
 using System;
 
-namespace Domain
+namespace Application.Answers
 {
-    public class Answer
+    public class AnswerDto
     {
         public string Id { get; set; }
         public string Message { get; set; }
-        public virtual Question Question { get; set; }
-        public virtual User Author { get; set; }
+        public string DisplayName { get; set; }
+        public string Username { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

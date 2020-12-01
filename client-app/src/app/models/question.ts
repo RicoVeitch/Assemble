@@ -1,9 +1,12 @@
+import { IAnswer } from "./answer";
+
 export interface IQuestion {
   id: string;
   title: string;
   description: string;
   category: string;
   date: string;
+  answers: IAnswer[];
   // Username: string
 }
 

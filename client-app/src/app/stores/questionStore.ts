@@ -16,7 +16,7 @@ export default class QuestionStore {
 
   @observable questions = new Map();
   // @observable question: IQuestion | null = null;
-  @observable selectedQuestion: IQuestion | null = null;
+  @observable.deep selectedQuestion: IQuestion | null = null;
   @observable edditing: boolean = false;
 
   @computed get activitiesByDate() {
@@ -27,7 +27,8 @@ export default class QuestionStore {
 
   @action loadQuestions = async () => {
     try {
-      const response = await agent.Questions.list()
+      const response = await agent.Questions.list();
+      console.log(response);
       runInAction(() => {
         response.forEach(question => {
           this.questions.set(question.id, question);

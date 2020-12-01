@@ -21,20 +21,23 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Message")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("QuestionId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
                 });
@@ -263,13 +266,13 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Answer", b =>
                 {
-                    b.HasOne("Domain.Question", null)
+                    b.HasOne("Domain.User", "Author")
+                        .WithMany("Answers")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("Domain.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId");
-
-                    b.HasOne("Domain.User", null)
-                        .WithMany("Answers")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Domain.Question", b =>

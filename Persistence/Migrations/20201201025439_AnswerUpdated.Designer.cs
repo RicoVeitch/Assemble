@@ -9,14 +9,40 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201129091528_UserToQuestionAdded")]
-    partial class UserToQuestionAdded
+    [Migration("20201201025439_AnswerUpdated")]
+    partial class AnswerUpdated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.0");
+
+            modelBuilder.Entity("Domain.Answer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("QuestionId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+                });
 
             modelBuilder.Entity("Domain.Question", b =>
                 {
@@ -238,6 +264,17 @@ namespace Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Domain.Answer", b =>
+                {
+                    b.HasOne("Domain.User", "Author")
+                        .WithMany("Answers")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("Domain.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId");
                 });
 
             modelBuilder.Entity("Domain.Question", b =>

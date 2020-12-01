@@ -21,7 +21,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<Answer>>> List()
+        public async Task<ActionResult<List<AnswerDto>>> List()
         {
             return await _mediator.Send(new List.Query());
         }

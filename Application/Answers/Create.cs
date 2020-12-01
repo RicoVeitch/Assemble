@@ -40,14 +40,17 @@ namespace Application.Answers
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername()); // get currently logged in usery
+                var question = await _context.Questions.FindAsync(request.QuestionId);
+
                 var answer = new Answer
                 {
                     Id = request.Id,
                     Message = request.Message,
+                    Author = user,
+                    Question = question,
+                    CreatedAt = DateTime.Now,
                 };
-
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername()); // get currently logged in usery
-                var question = await _context.Questions.FindAsync(request.QuestionId);
 
                 user.Answers.Add(answer);
                 question.Answers.Add(answer);

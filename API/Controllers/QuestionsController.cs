@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain;
 using MediatR;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +19,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Question>>> List()
+        public async Task<ActionResult<List<QuestionDto>>> List()
         {
             return await _mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Question>> Details(Guid id)
+        public async Task<ActionResult<QuestionDto>> Details(Guid id)
         {
             return await _mediator.Send(new Details.Query { Id = id });
         }

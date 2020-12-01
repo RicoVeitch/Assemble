@@ -5,26 +5,29 @@ using MediatR;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace Application.Answers
 {
     public class List
     {
-        public class Query : IRequest<List<Answer>> { }
+        public class Query : IRequest<List<AnswerDto>> { }
 
-        public class Handler : IRequestHandler<Query, List<Answer>>
+        public class Handler : IRequestHandler<Query, List<AnswerDto>>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IMapper _mapper;
+            public Handler(DataContext context, IMapper mapper)
             {
+                _mapper = mapper;
                 _context = context;
             }
 
-            public async Task<List<Answer>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<AnswerDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var answer = await _context.Answers.ToListAsync();
+                var answers = await _context.Answers.ToListAsync();
 
-                return answer;
+                return _mapper.Map<List<Answer>, List<AnswerDto>>(answers);
             }
         }
     }

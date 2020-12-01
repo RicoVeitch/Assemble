@@ -3,6 +3,7 @@ import { IQuestion } from '../models/question';
 import {history} from '../..';
 import { toast } from 'react-toastify';
 import { IUser, IUserFormValues } from '../models/user';
+import { IAnswer } from '../models/answer';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -46,6 +47,13 @@ const Questions = {
   details: (id: string) => requests.get(`/Questions/${id}`)
 }
 
+const Answers = {
+  list: (): Promise<IAnswer[]> => requests.get('/Answer'),
+  create: (answer: IAnswer) => requests.post('/Answer', answer),
+  edit: (answer: IAnswer) => requests.put(`/Answer/${answer.id}`, answer),
+  delete: (id: string) => requests.del(`/Answer/${id}`),
+}
+
 const Users = {
   login: (user: IUserFormValues): Promise<IUser> =>  requests.post('/User/login', user),
   register: (user: IUserFormValues): Promise<IUser> => requests.post('/User/register', user),
@@ -55,4 +63,5 @@ const Users = {
 export default {
   Questions,
   Users,
+  Answers
 };

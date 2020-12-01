@@ -39,6 +39,7 @@ const QuestionForm: React.FC<IProps> = ({ id }) => {
     category: '',
     description: '',
     date: '',
+    answers: [],
   });
 
   useEffect(() => {
