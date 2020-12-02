@@ -5,6 +5,7 @@ import { Button, Comment, Header, Segment } from 'semantic-ui-react'
 import QuestionForm from '../form/QuestionForm';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import AnswerForm from '../form/AnswerForm';
+import { formatDistance } from 'date-fns';
 
 interface DetailParams {
   id: string;
@@ -12,7 +13,7 @@ interface DetailParams {
 
 const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match }) => {
   const rootStore = useContext(RootStoreContext);
-  const { selectedQuestion, loadQuestion, deleteQuestion, deselectQuestion } = rootStore.questionStore;
+  const { selectedQuestion, loadQuestion, deleteQuestion, deselectQuestion, submitting } = rootStore.questionStore;
   const { openModal } = rootStore.modalStore;
   const { deleteAnswer } = rootStore.answerStore;
   const { user } = rootStore.userStore;
@@ -36,7 +37,7 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
           />
           <Button
             // name={activity.id}
-            // loading={target === activity.id && submitting}
+            loading={submitting}
             onClick={() => deleteQuestion(match.params.id)}
             floated='right'
             content='Delete'
@@ -56,7 +57,7 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
               <Comment.Content>
                 <Comment.Author as='a'>{displayName}</Comment.Author>
                 <Comment.Metadata>
-                  <span>{createdAt}</span>
+                  <span>{formatDistance(new Date(createdAt!), new Date())} ago</span>
                 </Comment.Metadata>
                 <Comment.Text>{message}</Comment.Text>
                 <Comment.Actions>

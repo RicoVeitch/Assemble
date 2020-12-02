@@ -4,5 +4,5 @@ export interface IAnswer {
   message: string;
   displayName?: string;
   username?: string;
-  createdAt?: string;
+  createdAt?: Date;
 }

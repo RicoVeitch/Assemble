@@ -26,14 +26,15 @@ const AnswerForm: React.FC<IProps> = ({ question, message, answerId }) => {
   const { closeModal, openModal } = rootStore.modalStore;
   const { user } = rootStore.userStore;
 
-  const handleSubmitForm = (values: any) => {
+  const handleSubmitForm = async (values: any) => {
     if (user) {
       if (answerId) {
-        editAnswer(answerId, values);
+        editAnswer(answerId, question.id, values);
       } else {
-        const answer: IAnswer = { ...values, id: uuid().toString(), questionId: question.id };
-        addAnswer(answer);
+        const answer: IAnswer = { ...values, ...user, id: uuid().toString(), questionId: question.id, createdAt: new Date() };
+        addAnswer(answer, question.id);
       }
+      closeModal();
     } else {
       console.log('sdsds');
       openModal(<LoginForm />);
@@ -46,10 +47,8 @@ const AnswerForm: React.FC<IProps> = ({ question, message, answerId }) => {
       <FinalForm
         validate={validator}
         onSubmit={handleSubmitForm}
-        render={({ handleSubmit, submitting, invalid }) => (
-          <Form onSubmit={handleSubmit}>
-            {//onSubmit={() => handleSubmit()!.then(() => form.reset())}
-            }
+        render={({ handleSubmit, submitting, invalid, form }) => (
+          <Form onSubmit={() => handleSubmit()!.then(() => form.reset())}>
             <Field
               name='message'
               initialValue={message}

@@ -8,10 +8,7 @@ import TextInput from '../../../app/common/form/TextInput';
 import TextAreaInput from '../../../app/common/form/TextAreaInput';
 import CategoryInput from '../../../app/common/form/CategoryInput';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
-// import { set } from 'mobx';
-// import { RouteComponentProps } from 'react-router-dom';
 import { RootStoreContext } from '../../../app/stores/rootStore';
-import { toJS } from 'mobx';
 
 const validator = combineValidators({
   title: isRequired({ message: 'The event title is required' }),
@@ -29,9 +26,8 @@ interface IProps {
 }
 
 const QuestionForm: React.FC<IProps> = ({ id }) => {
-  console.log(id);
   const rootStore = useContext(RootStoreContext);
-  const { createQuestion, selectedQuestion, editQuestion } = rootStore.questionStore;
+  const { createQuestion, selectedQuestion, editQuestion, submitting } = rootStore.questionStore;
   const { closeModal } = rootStore.modalStore;
 
   const [question, setQuestion] = useState<IQuestion>(new QuestionFormValues());
@@ -40,7 +36,7 @@ const QuestionForm: React.FC<IProps> = ({ id }) => {
     if (id) {
       setQuestion(new QuestionFormValues(selectedQuestion!));
     }
-  }, [selectedQuestion])
+  }, [selectedQuestion, id])
 
   const handleFinalFormSubmit = (values: any) => {
     if (id) {
@@ -68,6 +64,7 @@ const QuestionForm: React.FC<IProps> = ({ id }) => {
                 <Field name='category' initialValue={question.category} options={categories} component={CategoryInput} />
                 <Button positive disabled={invalid} type='submit'>Submit</Button>
                 <Button
+                  loading={submitting}
                   onClick={closeModal}
                   floated='right'
                   type='button'
