@@ -53,6 +53,7 @@ namespace Application.Questions
                     Description = request.Description,
                     Category = request.Category,
                     Date = request.Date,
+                    Author = user
                 };
 
                 user.Questions.Add(question);

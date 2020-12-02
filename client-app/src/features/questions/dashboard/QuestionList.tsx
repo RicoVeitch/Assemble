@@ -7,10 +7,11 @@ import { RootStoreContext } from '../../../app/stores/rootStore';
 const QuestionList = () => {
   const rootStore = useContext(RootStoreContext);
   const { loadQuestions, activitiesByDate } = rootStore.questionStore;
+  const { user } = rootStore.userStore;
 
   useEffect(() => {
     loadQuestions();
-  }, [loadQuestions]);
+  }, [loadQuestions, user]);
 
   return (
     <Fragment>

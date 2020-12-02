@@ -13,13 +13,21 @@ const NavBar: React.FC = () => {
   const { openModal } = rootStore.modalStore;
   const { user, logout } = rootStore.userStore;
 
+  const handleCreateQuestion = () => {
+    if (user) {
+      openModal(<QuestionForm />);
+    } else {
+      openModal(<LoginForm />);
+    }
+  }
+
   return (
     <Menu fixed='top' inverted>
       <Container>
         <Menu.Item header as={Link} to={'/'} >Assemble</Menu.Item>
         <Menu.Item header as={Link} to={'/'} name='Questions' />
         <Menu.Item>
-          <Button onClick={() => openModal(<QuestionForm />)} positive content='Create Question' />
+          <Button onClick={handleCreateQuestion} positive content='Create Question' />
         </Menu.Item>
         {user ? (
           <Menu.Item position='right'>

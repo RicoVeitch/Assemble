@@ -22,9 +22,11 @@ export default class QuestionStore {
     }
   }
 
-  @action deleteAnswer = async (id: string) => {
+  @action deleteAnswer = async (answerId: string, questionId: string) => {
     try {
-      await agent.Answers.delete(id);
+      await agent.Answers.delete(answerId);
+      // let question = this.rootStore.questionStore.questions.get(questionId);
+      // this.rootStore.questionStore.loadQuestion(questionId);
     } catch(error) {
       throw error;
     }

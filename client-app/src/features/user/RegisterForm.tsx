@@ -33,13 +33,13 @@ const RegisterForm = () => {
             color='green'
             textAlign='center'
           />
-          <Field name='email' placeholder='Email' component={TextInput} />
-          <Field name='password' placeholder='Password' type='password' component={TextInput} />
-          <Field name='username' placeholder='Username' component={TextInput} />
-          <Field name='displayName' placeholder='Display name' component={TextInput} />
+          <Field name='email' icon='user' iconPosition='left' placeholder='Email' component={TextInput} />
+          <Field name='username' icon='user' iconPosition='left' placeholder='Username' component={TextInput} />
+          <Field name='displayName' icon='user' iconPosition='left' placeholder='Display name' component={TextInput} />
+          <Field name='password' icon='lock' iconPosition='left' placeholder='Password' type='password' component={TextInput} />
           {/* {submitError && <Label color='red' basic content={submitError.data.errors} />} */}
           {submitError && <FormError error={submitError} />}
-          <Button positive disabled={(invalid && !dirtySinceLastSubmit)} type='submit'>Register</Button>
+          <Button fluid positive disabled={(invalid && !dirtySinceLastSubmit)} type='submit'>Register</Button>
         </Form>
       )}
     />

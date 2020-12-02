@@ -7,8 +7,28 @@ export interface IQuestion {
   category: string;
   date: string;
   asked?: boolean;
+  username?: string;
+  displayName?: string;
   answers: IAnswer[];
   // Username: string
+}
+
+
+export class QuestionFormValues implements IQuestion {
+  id: string = '';
+  title: string = '';
+  description: string = '';
+  category: string = '';
+  date: string = '';
+  asked?: boolean | undefined = undefined;
+  username?: string | undefined = undefined;
+  displayName?: string | undefined = undefined;
+  answers: IAnswer[] = [];
+
+  constructor(init?: QuestionFormValues) {
+    Object.assign(this, init);
+  }
+
 }
 
 export const categories = [

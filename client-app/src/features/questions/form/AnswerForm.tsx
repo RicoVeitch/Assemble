@@ -8,6 +8,7 @@ import { IQuestion } from '../../../app/models/question';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import { v4 as uuid } from 'uuid';
 import { combineValidators, isRequired } from 'revalidate';
+import LoginForm from '../../user/LoginForm';
 
 const validator = combineValidators({
   message: isRequired({ message: 'Message is required' }),
@@ -22,17 +23,22 @@ interface IProps {
 const AnswerForm: React.FC<IProps> = ({ question, message, answerId }) => {
   const rootStore = useContext(RootStoreContext);
   const { addAnswer, editAnswer } = rootStore.answerStore;
-  const { closeModal } = rootStore.modalStore;
+  const { closeModal, openModal } = rootStore.modalStore;
+  const { user } = rootStore.userStore;
 
   const handleSubmitForm = (values: any) => {
-    if (answerId) {
-      editAnswer(answerId, values);
+    if (user) {
+      if (answerId) {
+        editAnswer(answerId, values);
+      } else {
+        const answer: IAnswer = { ...values, id: uuid().toString(), questionId: question.id };
+        addAnswer(answer);
+      }
     } else {
-      const answer: IAnswer = { ...values, id: uuid().toString(), questionId: question.id };
-      addAnswer(answer);
+      console.log('sdsds');
+      openModal(<LoginForm />);
     }
-    closeModal();
-
+    // closeModal();
   }
 
   return (
@@ -44,19 +50,6 @@ const AnswerForm: React.FC<IProps> = ({ question, message, answerId }) => {
           <Form onSubmit={handleSubmit}>
             {//onSubmit={() => handleSubmit()!.then(() => form.reset())}
             }
-            {/* {message: (<Field
-              name='message'
-              initialValue={message}
-              component={TextAreaInput}
-              rows={2}
-              placeholder='Add your answer'
-            />) ? <Field
-            name='message'
-            initialValue={message}
-            component={TextAreaInput}
-            rows={2}
-            placeholder='Add your answer'
-          />} */}
             <Field
               name='message'
               initialValue={message}

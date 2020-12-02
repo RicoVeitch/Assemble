@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Form, Grid, Segment } from 'semantic-ui-react'
 import { v4 as uuid } from 'uuid';
-import { categories, IQuestion } from '../../../app/models/question';
+import { categories, IQuestion, QuestionFormValues } from '../../../app/models/question';
 import { Form as FinalForm, Field } from 'react-final-form';
 import TextInput from '../../../app/common/form/TextInput';
 import TextAreaInput from '../../../app/common/form/TextAreaInput';
@@ -11,6 +11,7 @@ import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan 
 // import { set } from 'mobx';
 // import { RouteComponentProps } from 'react-router-dom';
 import { RootStoreContext } from '../../../app/stores/rootStore';
+import { toJS } from 'mobx';
 
 const validator = combineValidators({
   title: isRequired({ message: 'The event title is required' }),
@@ -30,39 +31,28 @@ interface IProps {
 const QuestionForm: React.FC<IProps> = ({ id }) => {
   console.log(id);
   const rootStore = useContext(RootStoreContext);
-  const { createQuestion, setEdditing, selectedQuestion, editQuestion } = rootStore.questionStore;
+  const { createQuestion, selectedQuestion, editQuestion } = rootStore.questionStore;
   const { closeModal } = rootStore.modalStore;
 
-  const [question, setQuestion] = useState<IQuestion>({
-    id: '',
-    title: '',
-    category: '',
-    description: '',
-    date: '',
-    answers: [],
-  });
+  const [question, setQuestion] = useState<IQuestion>(new QuestionFormValues());
 
   useEffect(() => {
     if (id) {
-      setQuestion(selectedQuestion!);
+      setQuestion(new QuestionFormValues(selectedQuestion!));
     }
   }, [selectedQuestion])
 
   const handleFinalFormSubmit = (values: any) => {
-    if (selectedQuestion) {
-      let newQuestion: IQuestion = { ...values, date: new Date().toJSON() };
+    if (id) {
+      let newQuestion: IQuestion = { ...question, ...values, date: new Date().toJSON() };
       editQuestion(newQuestion);
     } else {
-      let newQuestion: IQuestion = { ...values, id: uuid(), date: new Date().toJSON() };
+      let newQuestion: IQuestion = { ...values, asked: true, id: uuid(), date: new Date().toJSON() };
       createQuestion(newQuestion);
     }
     closeModal();
 
   };
-  // const handleInputChange = (event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   const { name, value } = event.currentTarget;
-  //   setQuestion({ ...question, [name]: value });
-  // };
 
   return (
     <Grid>

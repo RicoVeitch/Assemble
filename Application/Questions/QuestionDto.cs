@@ -10,6 +10,8 @@ namespace Application.Questions
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
+        public string Username { get; set; }
+        public string DisplayName { get; set; }
         public DateTime Date { get; set; }
         public virtual ICollection<AnswerDto> Answers { get; set; }
     }

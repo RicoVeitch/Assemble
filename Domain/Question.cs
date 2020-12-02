@@ -10,6 +10,7 @@ namespace Domain
         public string Description { get; set; }
         public string Category { get; set; }
         public DateTime Date { get; set; }
+        public virtual User Author { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
     }
 }

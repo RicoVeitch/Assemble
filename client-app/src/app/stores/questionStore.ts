@@ -1,6 +1,7 @@
 
-import { action, computed, configure, makeObservable, observable, runInAction } from 'mobx';
+import { action, computed, configure, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { toast } from 'react-toastify';
+import { history } from '../..';
 import agent from '../api/agent';
 import { IQuestion } from '../models/question';
 import { RootStore } from './rootStore';
@@ -28,15 +29,16 @@ export default class QuestionStore {
   @action loadQuestions = async () => {
     try {
       const response = await agent.Questions.list();
-      console.log(response);
       runInAction(() => {
         response.forEach(question => {
+          question.asked = question.username === this.rootStore.userStore.user?.username;
+          // console.log(question);
           this.questions.set(question.id, question);
         });
       });
     } catch(error) {
       toast.error("Issue loading questions");
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -48,6 +50,7 @@ export default class QuestionStore {
       try {
         question = await agent.Questions.details(id);
         runInAction(() => {
+          question.asked = question.username === this.rootStore.userStore.user?.username;
           this.questions.set(question.id, question);
           this.selectedQuestion = question;
         })
@@ -57,12 +60,14 @@ export default class QuestionStore {
         console.log(error)
       }
     }
+    // console.log(toJS(this.selectedQuestion));
   }
 
   @action createQuestion = async (question: IQuestion) => {
     try {
       await agent.Questions.create(question);
       runInAction(() => {
+        console.log(question);
         this.questions.set(question.id, question);
         this.edditing = false;
       });
@@ -80,12 +85,14 @@ export default class QuestionStore {
       // console.log(editedQuestion);
       // console.log(this.selectedQuestion);
       editedQuestion.id = this.selectedQuestion!.id;
+      console.log(editedQuestion);
       await agent.Questions.edit(editedQuestion)
       runInAction(() => {
         this.questions.set(editedQuestion.id, editedQuestion);
-        this.deselectQuestion();
+        // this.deselectQuestion();
+        this.selectedQuestion = editedQuestion;
       });
-      await this.loadQuestions();
+      // await this.loadQuestions();
     } catch(error) {
       console.log(error);
       toast.error("Issue editting question");
@@ -97,12 +104,13 @@ export default class QuestionStore {
       await agent.Questions.delete(id);
       runInAction(() => {
         this.questions.delete(id);
-        this.deselectQuestion();
+        // this.deselectQuestion();
       });
     } catch(error) {
       console.log(error);
       toast.error("Issue deleting question");
     }
+    history.push('/');
   }
 
   @action setEdditing = () => {
