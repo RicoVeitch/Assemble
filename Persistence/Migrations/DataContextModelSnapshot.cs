@@ -42,15 +42,22 @@ namespace Persistence.Migrations
                     b.ToTable("Answers");
                 });
 
+            modelBuilder.Entity("Domain.Category", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("Domain.Question", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AuthorId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Category")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
@@ -67,6 +74,21 @@ namespace Persistence.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("Domain.QuestionCategory", b =>
+                {
+                    b.Property<string>("QuestionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("QuestionId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("QuestionCategories");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -280,6 +302,21 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.User", "Author")
                         .WithMany("Questions")
                         .HasForeignKey("AuthorId");
+                });
+
+            modelBuilder.Entity("Domain.QuestionCategory", b =>
+                {
+                    b.HasOne("Domain.Category", "Category")
+                        .WithMany("QuestionCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Question", "Question")
+                        .WithMany("QuestionCategories")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -7,6 +7,9 @@ using Persistence;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using Application.Interfaces;
+using System.Collections.Generic;
+using Application.Errors;
+using System.Net;
 
 namespace Application.Questions
 {
@@ -17,8 +20,8 @@ namespace Application.Questions
             public string Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
-            public string Category { get; set; }
             public DateTime Date { get; set; }
+            public ICollection<string> categories { get; set; }
         }
         // validator for the command class. Sits inbetween command and handler for mediator.
         public class CommandValidator : AbstractValidator<Command>
@@ -27,7 +30,6 @@ namespace Application.Questions
             {
                 RuleFor(x => x.Title).NotEmpty();
                 RuleFor(x => x.Description).NotEmpty();
-                RuleFor(x => x.Category).NotEmpty();
                 RuleFor(x => x.Date).NotEmpty();
             }
         }
@@ -46,26 +48,38 @@ namespace Application.Questions
             {
                 var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername()); // get currently logged in usery
 
+                if (user == null)
+                {
+                    throw new RestException(HttpStatusCode.NotFound, new { user = "user not found" });
+                }
+
                 var question = new Question
                 {
                     Id = request.Id,
                     Title = request.Title,
                     Description = request.Description,
-                    Category = request.Category,
                     Date = request.Date,
-                    Author = user
+                    Author = user,
+                    // QuestionCategories = new List<QuestionCategory>()
                 };
 
-                user.Questions.Add(question);
-                // _context.Questions.Add(question);
+                _context.Questions.Add(question);
 
+                foreach (var categoryItem in request.categories)
+                {
+                    var category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == categoryItem);
+                    var questionCategory = new QuestionCategory
+                    {
+                        Question = question,
+                        Category = category
+                    };
+                    _context.QuestionCategories.Add(questionCategory);
+                }
+
+                // user.Questions.Add(question);
                 var success = await _context.SaveChangesAsync() > 0;
 
-                // Users.CurrentUser
-
-
-                // if (success) return Unit.Value;
-                return Unit.Value;
+                if (success) return Unit.Value;
 
                 throw new Exception("Error in saving changes");
             }

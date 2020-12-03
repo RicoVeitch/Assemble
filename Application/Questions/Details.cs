@@ -38,7 +38,6 @@ namespace Application.Questions
                     throw new RestException(HttpStatusCode.NotFound, new { question = "question not found" });
                 }
 
-                // return question;
                 return _mapper.Map<Question, QuestionDto>(question);
             }
         }

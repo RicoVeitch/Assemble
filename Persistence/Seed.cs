@@ -29,35 +29,80 @@ namespace Persistence
                     await userManager.CreateAsync(user, "Pa$$w0rd");
                 }
             }
+            if (!context.Questions.Any())
+            {
+                var categories = new List<Category>
+                {
+                    new Category
+                    {
+                        Id = "Biology",
+                        // QuestionCategories = new List<QuestionCategory>()
+                    },
+                };
+                context.Categories.AddRange(categories);
+                var questions = new List<Question>
+                {
+                    new Question
+                    {
+                        Id = "A",
+                        Title = "test",
+                        Date = DateTime.Now.AddMonths(-2),
+                        Description = "Activity 2 months ago",
+                        QuestionCategories = new List<QuestionCategory>
+                        {
+                            new QuestionCategory
+                            {
+                                CategoryId = "Biology",
+                                QuestionId = "A",
+                            }
+                        }
+                    }
+                };
+                context.Questions.AddRange(questions);
+                context.SaveChanges();
+            }
 
-            // seed question if empty.
-            // if (!context.Questions.Any())
+            // if (!context.Categories.Any())
             // {
-            //     var questions = new List<Question>
+            //     var categories = new List<Category>
             //     {
-            //         new Question
+            //         new Category
             //         {
-            //             Title = "Title 1",
-            //             Description = "Desc 1",
-            //             Category = "Science",
-            //             Date = DateTime.Now,
+            //             Id = "Biology",
+            //             // QuestionCategories = new List<QuestionCategory>()
             //         },
-            //         new Question
-            //         {
-            //             Title = "Title 2",
-            //             Description = "Desc 2",
-            //             Category = "English",
-            //             Date = DateTime.Now,
-            //         },
-            //         new Question
-            //         {
-            //             Title = "Title 3",
-            //             Description = "Desc 3",
-            //             Category = "History",
-            //             Date = DateTime.Now
-            //         },
+            //         // new Category
+            //         // {
+            //         //     Id = "Theology",
+            //         //     QuestionCategories = new List<QuestionCategory>()
+            //         // },
+            //         // new Category
+            //         // {
+            //         //     Id = "Computer Science",
+            //         //     QuestionCategories = new List<QuestionCategory>()
+            //         // },
+            //         // new Category
+            //         // {
+            //         //     Id = "Hardware",
+            //         //     QuestionCategories = new List<QuestionCategory>()
+            //         // },
+            //         // new Category
+            //         // {
+            //         //     Id = "English",
+            //         //     QuestionCategories = new List<QuestionCategory>()
+            //         // },
+            //         // new Category
+            //         // {
+            //         //     Id = "History",
+            //         //     QuestionCategories = new List<QuestionCategory>()
+            //         // },
+            //         // new Category
+            //         // {
+            //         //     Id = "Science",
+            //         //     QuestionCategories = new List<QuestionCategory>()
+            //         // },
             //     };
-            //     context.Questions.AddRange(questions);
+            //     context.Categories.AddRange(categories);
             //     context.SaveChanges();
             // }
         }

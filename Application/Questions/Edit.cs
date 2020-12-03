@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Domain;
 using MediatR;
 using Persistence;
-using Microsoft.EntityFrameworkCore;
 using Application.Errors;
 using System.Net;
-using FluentValidation;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Questions
 {
@@ -20,17 +20,7 @@ namespace Application.Questions
             public string Description { get; set; }
             public string Category { get; set; }
             public DateTime? Date { get; set; }
-        }
-
-        public class CommandValidator : AbstractValidator<Command>
-        {
-            public CommandValidator()
-            {
-                RuleFor(x => x.Title).NotEmpty();
-                RuleFor(x => x.Description).NotEmpty();
-                RuleFor(x => x.Category).NotEmpty();
-                RuleFor(x => x.Date).NotEmpty();
-            }
+            public ICollection<string> categories { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -52,8 +42,22 @@ namespace Application.Questions
 
                 question.Title = request.Title ?? question.Title;
                 question.Description = request.Description ?? question.Description;
-                question.Category = request.Category ?? question.Category;
                 question.Date = request.Date ?? question.Date;
+
+                if (request.categories?.Count > 0)
+                {
+                    question.QuestionCategories.Clear();
+                    foreach (var newCategory in request.categories)
+                    {
+                        var category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == newCategory);
+                        var questionCategory = new QuestionCategory
+                        {
+                            Question = question,
+                            Category = category
+                        };
+                        question.QuestionCategories.Add(questionCategory);
+                    }
+                }
 
                 var success = await _context.SaveChangesAsync() > 0;
 
