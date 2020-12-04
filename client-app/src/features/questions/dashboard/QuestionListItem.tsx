@@ -22,7 +22,9 @@ const QuestionListItem: React.FC<{ question: IQuestion }> = ({ question }) => {
 
       <Item.Group>
         <Item.Extra>
-          <Label floated='left'>{question.category}</Label>
+          {question.categories.map((category, idx) => (
+            <Label key={question.categories[idx]} floated='left'>{category}</Label>
+          ))}
         </Item.Extra>
       </Item.Group>
 

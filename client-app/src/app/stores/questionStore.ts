@@ -93,9 +93,9 @@ export default class QuestionStore {
     this.submitting = true;
     try {
       editedQuestion.id = this.selectedQuestion!.id;
-      console.log(editedQuestion);
       await agent.Questions.edit(editedQuestion)
       runInAction(() => {
+        editedQuestion.date = new Date(editedQuestion.date);
         this.questions.set(editedQuestion.id, editedQuestion);
         this.selectedQuestion = editedQuestion;
         this.submitting = false;

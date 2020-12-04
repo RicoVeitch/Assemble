@@ -16,6 +16,7 @@ namespace Application.Questions
         public DateTime Date { get; set; }
         public ICollection<AnswerDto> Answers { get; set; }
         [JsonPropertyName("categories")]
-        public ICollection<CategoryDto> QuestionCategories { get; set; }
+        public ICollection<string> QuestionCategories { get; set; }
+        // public ICollection<CategoryDto> QuestionCategories { get; set; }
     }
 }

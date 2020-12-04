@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FieldRenderProps } from 'react-final-form';
-import { FormFieldProps, Form, Label, Select } from 'semantic-ui-react';
+import { FormFieldProps, Form, Label, Dropdown } from 'semantic-ui-react';
+import { RootStoreContext } from '../../stores/rootStore';
 
 interface IProps
   extends FieldRenderProps<string, HTMLElement>,
@@ -10,15 +11,18 @@ const SelectInput: React.FC<IProps> = ({
   input,
   width,
   options,
-  placeholder,
   meta: { touched, error }
 }) => {
+  const rootStore = useContext(RootStoreContext);
+  const { selectedQuestion } = rootStore.questionStore;
+
   return (
     <Form.Field error={touched && !!error} width={width}>
-      <Select
-        value={input.value}
+      <Dropdown
+        placeholder='Categories'
+        fluid multiple selection search
         onChange={(e, data) => input.onChange(data.value)}
-        placeholder={placeholder}
+        defaultValue={selectedQuestion?.categories}
         options={options}
       />
       {touched && error && (

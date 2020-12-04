@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react-lite'
 import React, { Fragment, useContext, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Button, Comment, Header, Segment } from 'semantic-ui-react'
+import { Button, Comment, Header, Item, Label, Segment } from 'semantic-ui-react'
 import QuestionForm from '../form/QuestionForm';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import AnswerForm from '../form/AnswerForm';
 import { formatDistance } from 'date-fns';
+import { toJS } from 'mobx';
 
 interface DetailParams {
   id: string;
@@ -21,13 +22,18 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
   useEffect(() => {
     loadQuestion(match.params.id);
     return deselectQuestion;
-  }, [loadQuestion, match.params.id, deselectQuestion, selectedQuestion]);
+  }, [loadQuestion, match.params.id, deselectQuestion]);
 
   return (
     <Fragment>
       <Segment clearing style={{ marginTop: '7em' }}>
         <Header as='h1'>{selectedQuestion?.title}</Header>
         <p>{selectedQuestion?.description}</p>
+
+        {selectedQuestion?.categories.map((category, idx) => (
+          <Label key={selectedQuestion.categories[idx]} floated='left'>{category}</Label>
+        ))}
+
         {selectedQuestion?.asked && <>
           <Button
             onClick={() => openModal(<QuestionForm id={match.params.id} />)}

@@ -36,7 +36,30 @@ namespace Persistence
                     new Category
                     {
                         Id = "Biology",
-                        // QuestionCategories = new List<QuestionCategory>()
+                    },
+                    new Category
+                    {
+                        Id = "Theology"
+                    },
+                    new Category
+                    {
+                        Id = "Computer Science"
+                    },
+                    new Category
+                    {
+                        Id = "Hardware"
+                    },
+                    new Category
+                    {
+                        Id = "English"
+                    },
+                    new Category
+                    {
+                        Id = "History"
+                    },
+                    new Category
+                    {
+                        Id = "Economics"
                     },
                 };
                 context.Categories.AddRange(categories);
@@ -48,6 +71,7 @@ namespace Persistence
                         Title = "test",
                         Date = DateTime.Now.AddMonths(-2),
                         Description = "Activity 2 months ago",
+                        Author = await userManager.FindByIdAsync("a"),
                         QuestionCategories = new List<QuestionCategory>
                         {
                             new QuestionCategory
@@ -61,50 +85,6 @@ namespace Persistence
                 context.Questions.AddRange(questions);
                 context.SaveChanges();
             }
-
-            // if (!context.Categories.Any())
-            // {
-            //     var categories = new List<Category>
-            //     {
-            //         new Category
-            //         {
-            //             Id = "Biology",
-            //             // QuestionCategories = new List<QuestionCategory>()
-            //         },
-            //         // new Category
-            //         // {
-            //         //     Id = "Theology",
-            //         //     QuestionCategories = new List<QuestionCategory>()
-            //         // },
-            //         // new Category
-            //         // {
-            //         //     Id = "Computer Science",
-            //         //     QuestionCategories = new List<QuestionCategory>()
-            //         // },
-            //         // new Category
-            //         // {
-            //         //     Id = "Hardware",
-            //         //     QuestionCategories = new List<QuestionCategory>()
-            //         // },
-            //         // new Category
-            //         // {
-            //         //     Id = "English",
-            //         //     QuestionCategories = new List<QuestionCategory>()
-            //         // },
-            //         // new Category
-            //         // {
-            //         //     Id = "History",
-            //         //     QuestionCategories = new List<QuestionCategory>()
-            //         // },
-            //         // new Category
-            //         // {
-            //         //     Id = "Science",
-            //         //     QuestionCategories = new List<QuestionCategory>()
-            //         // },
-            //     };
-            //     context.Categories.AddRange(categories);
-            //     context.SaveChanges();
-            // }
         }
     }
 }

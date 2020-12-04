@@ -17,19 +17,25 @@ function App() {
   const rootStore = useContext(RootStoreContext);
   const { token, getCurrentUser } = rootStore.userStore;
 
-  useEffect(() => {
-    if (token) {
-      // get current user
-      getCurrentUser();
-    } else {
-      // loading screen
-    }
-  })
+  async function init() {
+    await getCurrentUser();
+  }
+  init();
+
+  // useEffect(() => {
+  //   if (token) {
+  //     // get current user
+  //     init();
+  //   } else {
+  //     // loading screen
+  //   }
+  // }, [])
   return (
     <>
       <ToastContainer position='top-right' />
       <NavBar />
       <ModalContainer />
+      {console.log('main')}
       <Container style={{ marginTop: '8em' }}>
         <Route exact path='/' component={QuestionDashboard} />
         {/* <Route path='/home' component={QuestionDashboard} /> */}

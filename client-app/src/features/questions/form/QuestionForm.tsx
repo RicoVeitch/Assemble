@@ -12,7 +12,6 @@ import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const validator = combineValidators({
   title: isRequired({ message: 'The event title is required' }),
-  category: isRequired('Category'),
   description: composeValidators(
     isRequired('Description'),
     hasLengthGreaterThan(4)({
@@ -47,7 +46,6 @@ const QuestionForm: React.FC<IProps> = ({ id }) => {
       createQuestion(newQuestion);
     }
     closeModal();
-
   };
 
   return (
@@ -61,7 +59,7 @@ const QuestionForm: React.FC<IProps> = ({ id }) => {
               <Form onSubmit={handleSubmit}>
                 <Field name='title' placeholder='title' initialValue={question.title} component={TextInput} />
                 <Field name='description' placeholder='description' initialValue={question.description} component={TextAreaInput} />
-                <Field name='category' initialValue={question.category} options={categories} component={CategoryInput} />
+                <Field name='categories' options={categories} component={CategoryInput} />
                 <Button positive disabled={invalid} type='submit'>Submit</Button>
                 <Button
                   loading={submitting}
