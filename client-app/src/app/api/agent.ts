@@ -44,7 +44,9 @@ const Questions = {
   create: (question: IQuestion) => requests.post('/Questions', question),
   edit: (question: IQuestion) => requests.put(`/Questions/${question.id}`, question),
   delete: (id: string) => requests.del(`/Questions/${id}`),
-  details: (id: string) => requests.get(`/Questions/${id}`)
+  details: (id: string) => requests.get(`/Questions/${id}`),
+  like : (id: string) => requests.put(`/Questions/like/${id}`, {}),
+  dislike : (id: string) => requests.put(`/Questions/dislike/${id}`, {})
 }
 
 const Answers = {
@@ -52,6 +54,8 @@ const Answers = {
   create: (answer: IAnswer) => requests.post('/Answer', answer),
   edit: (id: string, answer: any) => requests.put(`/Answer/${id}`, answer),
   delete: (id: string) => requests.del(`/Answer/${id}`),
+  like : (id: string) => requests.put(`/Answer/like/${id}`, {}),
+  dislike : (id: string) => requests.put(`/Answer/dislike/${id}`, {})
 }
 
 const Users = {

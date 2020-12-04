@@ -26,6 +26,7 @@ export default class QuestionStore {
       })
       throw error;
     }
+    this.rootStore.questionStore.selectQuestion(questionId);
   }
 
   @action deleteAnswer = async (answerId: string, questionId: string) => {
@@ -42,6 +43,7 @@ export default class QuestionStore {
           break;
         }
       }
+      this.rootStore.questionStore.selectQuestion(questionId);
     } catch(error) {
       runInAction(() => {
         this.submitting = false;
@@ -64,10 +66,49 @@ export default class QuestionStore {
           break;
         }
       }
+      this.rootStore.questionStore.selectQuestion(questionId);
     } catch(error) {
       runInAction(() => {
         this.submitting = false;
       })
+      throw error;
+    }
+  }
+
+  @action likeAnswer = async (answerId: string, questionId: string) => {
+    try {
+      await agent.Answers.like(answerId);
+      let answers = this.rootStore.questionStore.questions.get(questionId).answers;
+      for(let i = 0; i < answers.length; i++) {
+        if(answers[i].id === answerId) {
+          runInAction(() => {
+            answers[i].likes += 1;
+            this.submitting = false;
+          })
+          break;
+        }
+      }
+      this.rootStore.questionStore.selectQuestion(questionId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @action dislikeAnswer = async (answerId: string, questionId: string) => {
+    try {
+      await agent.Answers.dislike(answerId);
+      let answers = this.rootStore.questionStore.questions.get(questionId).answers;
+      for(let i = 0; i < answers.length; i++) {
+        if(answers[i].id === answerId) {
+          runInAction(() => {
+            answers[i].likes -= 1;
+            this.submitting = false;
+          })
+          break;
+        }
+      }
+      this.rootStore.questionStore.selectQuestion(questionId);
+    } catch (error) {
       throw error;
     }
   }

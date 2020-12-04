@@ -1,6 +1,8 @@
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using Application.Interfaces;
 using Domain;
 using MediatR;
@@ -28,6 +30,9 @@ namespace Application.Users
             public async Task<UserDto> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _userManager.FindByNameAsync(_userAccessor.GetCurrentUsername());
+
+                if (user == null)
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Errors = "User does not exist" });
 
                 return new UserDto
                 {

@@ -4,6 +4,7 @@ export interface IQuestion {
   id: string;
   title: string;
   description: string;
+  likes: number;
   date: Date;
   asked?: boolean;
   username?: string;
@@ -18,6 +19,7 @@ export class QuestionFormValues implements IQuestion {
   id: string = '';
   title: string = '';
   description: string = '';
+  likes: number = 0;
   date: Date = new Date();
   asked?: boolean | undefined = undefined;
   username?: string | undefined = undefined;

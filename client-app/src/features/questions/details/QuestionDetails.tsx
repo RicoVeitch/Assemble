@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 import React, { Fragment, useContext, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Button, Comment, Header, Item, Label, Segment } from 'semantic-ui-react'
+import { Button, Comment, Header, Label, Segment } from 'semantic-ui-react'
 import QuestionForm from '../form/QuestionForm';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import AnswerForm from '../form/AnswerForm';
 import { formatDistance } from 'date-fns';
-import { toJS } from 'mobx';
+import VoteButton from '../../../app/common/vote/VoteButton';
 
 interface DetailParams {
   id: string;
@@ -34,6 +34,8 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
           <Label key={selectedQuestion.categories[idx]} floated='left'>{category}</Label>
         ))}
 
+        <VoteButton buttonSize='mini' iconSize='small' likes={selectedQuestion?.likes} questionId={selectedQuestion?.id} />
+
         {selectedQuestion?.asked && <>
           <Button
             onClick={() => openModal(<QuestionForm id={match.params.id} />)}
@@ -57,8 +59,8 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
           Answers
         </Header>
         <Segment>
-          {selectedQuestion && selectedQuestion.answers && selectedQuestion.answers.map(({ id, username, displayName, message, createdAt }) => (
-            <Comment key={id} style={{ marginBottom: '3em' }}>
+          {selectedQuestion && selectedQuestion.answers && selectedQuestion.answers.map(({ id, username, displayName, message, createdAt, likes }) => (
+            <Comment key={id} style={{ marginBottom: '5em' }}>
               <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
               <Comment.Content>
                 <Comment.Author as='a'>{displayName}</Comment.Author>
@@ -66,6 +68,7 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
                   <span>{formatDistance(new Date(createdAt!), new Date())} ago</span>
                 </Comment.Metadata>
                 <Comment.Text>{message}</Comment.Text>
+                <VoteButton buttonSize='mini' iconSize='small' likes={likes} questionId={selectedQuestion.id} answerId={id} />
                 <Comment.Actions>
                   <a>Reply</a>
                 </Comment.Actions>

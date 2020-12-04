@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Application.Answers;
-using Domain;
 
 namespace Application.Questions
 {
@@ -11,6 +10,7 @@ namespace Application.Questions
         public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public int Likes { get; set; }
         public string Username { get; set; }
         public string DisplayName { get; set; }
         public DateTime Date { get; set; }

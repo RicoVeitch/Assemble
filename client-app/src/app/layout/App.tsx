@@ -11,14 +11,15 @@ import QuestionForm from '../../features/questions/form/QuestionForm';
 import ModalContainer from '../common/modals/ModalContainer';
 import NavBar from '../../features/nav/NavBar';
 import { RootStoreContext } from '../stores/rootStore';
-import { toJS } from 'mobx';
 
 function App() {
   const rootStore = useContext(RootStoreContext);
   const { token, getCurrentUser } = rootStore.userStore;
 
   async function init() {
-    await getCurrentUser();
+    if (token) {
+      await getCurrentUser();
+    }
   }
   init();
 

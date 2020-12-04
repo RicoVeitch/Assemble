@@ -17,7 +17,7 @@ export default class QuestionStore {
 
   @observable questions = new Map();
   // @observable question: IQuestion | null = null;
-  @observable.deep selectedQuestion: IQuestion | null = null;
+  @observable selectedQuestion: IQuestion | null = null;
   @observable submitting: boolean = false;
   @observable fetchingList: boolean = false;
 
@@ -100,7 +100,6 @@ export default class QuestionStore {
         this.selectedQuestion = editedQuestion;
         this.submitting = false;
       });
-      // await this.loadQuestions();
     } catch(error) {
       runInAction(() => {
         this.submitting = false;
@@ -125,6 +124,29 @@ export default class QuestionStore {
       toast.error("Issue deleting question");
     }
     history.push('/');
+  }
+
+  @action likeQuestion = async (id: string) => {
+    try {
+      await agent.Questions.like(id);
+      runInAction(() => {
+        this.questions.get(id).likes += 1;
+        this.selectedQuestion = this.questions.get(id);
+      });
+    } catch(error) {
+      throw error;
+    }
+  }
+  @action dislikeQuestion = async (id: string) => {
+    try {
+      await agent.Questions.dislike(id);
+      runInAction(() => {
+        this.questions.get(id).likes -= 1;
+        this.selectedQuestion = this.questions.get(id);
+      });
+    } catch(error) {
+      throw error;
+    }
   }
 
   @action selectQuestion = (id: string) => {
