@@ -14,12 +14,12 @@ namespace Application.Answers
 {
     public class Like
     {
-        public class Command : IRequest
+        public class Command : IRequest<int>
         {
             public string Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, int>
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _userAccessor;
@@ -29,7 +29,7 @@ namespace Application.Answers
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<int> Handle(Command request, CancellationToken cancellationToken)
             {
                 var answer = await _context.Answers.FindAsync(request.Id);
 
@@ -67,7 +67,7 @@ namespace Application.Answers
 
                 var success = await _context.SaveChangesAsync() > 0;
 
-                if (success) return Unit.Value;
+                if (success) return answer.Likes;
 
                 throw new Exception("Error in saving changes");
             }

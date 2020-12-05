@@ -128,9 +128,12 @@ export default class QuestionStore {
 
   @action likeQuestion = async (id: string) => {
     try {
-      await agent.Questions.like(id);
+      const likes = await agent.Questions.like(id);
       runInAction(() => {
-        this.questions.get(id).likes += 1;
+        // let question = this.questions.get(id);
+        // this.questions.get(id).likes += question.liked ? -1 : 1;
+        // this.questions.get(id).liked = !question.liked;
+        this.questions.get(id).likes = likes;
         this.selectedQuestion = this.questions.get(id);
       });
     } catch(error) {
@@ -139,9 +142,9 @@ export default class QuestionStore {
   }
   @action dislikeQuestion = async (id: string) => {
     try {
-      await agent.Questions.dislike(id);
+      const likes = await agent.Questions.dislike(id);
       runInAction(() => {
-        this.questions.get(id).likes -= 1;
+        this.questions.get(id).likes = likes;
         this.selectedQuestion = this.questions.get(id);
       });
     } catch(error) {

@@ -77,12 +77,12 @@ export default class QuestionStore {
 
   @action likeAnswer = async (answerId: string, questionId: string) => {
     try {
-      await agent.Answers.like(answerId);
+      const likes = await agent.Answers.like(answerId);
       let answers = this.rootStore.questionStore.questions.get(questionId).answers;
       for(let i = 0; i < answers.length; i++) {
         if(answers[i].id === answerId) {
           runInAction(() => {
-            answers[i].likes += 1;
+            answers[i].likes = likes;
             this.submitting = false;
           })
           break;
@@ -96,12 +96,12 @@ export default class QuestionStore {
 
   @action dislikeAnswer = async (answerId: string, questionId: string) => {
     try {
-      await agent.Answers.dislike(answerId);
+      const likes = await agent.Answers.dislike(answerId);
       let answers = this.rootStore.questionStore.questions.get(questionId).answers;
       for(let i = 0; i < answers.length; i++) {
         if(answers[i].id === answerId) {
           runInAction(() => {
-            answers[i].likes -= 1;
+            answers[i].likes = likes;
             this.submitting = false;
           })
           break;

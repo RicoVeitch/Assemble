@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Application.Answers;
-using Domain;
 
 namespace Application.Questions
 {
@@ -18,7 +17,5 @@ namespace Application.Questions
         public ICollection<AnswerDto> Answers { get; set; }
         [JsonPropertyName("categories")]
         public ICollection<string> QuestionCategories { get; set; }
-        public ICollection<string> LikedQuestions { get; set; }
-        public ICollection<string> DislikedQuestions { get; set; }
     }
 }

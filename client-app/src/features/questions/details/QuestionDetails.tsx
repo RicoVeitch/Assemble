@@ -39,15 +39,14 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
         {selectedQuestion?.asked && <>
           <Button
             onClick={() => openModal(<QuestionForm id={match.params.id} />)}
-            floated='right'
+            floated='left'
             content='Edit'
             color='blue'
           />
           <Button
             // name={activity.id}
-            loading={submitting}
             onClick={() => deleteQuestion(match.params.id)}
-            floated='right'
+            floated='left'
             content='Delete'
             color='red'
           />
@@ -73,8 +72,8 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
                   <a>Reply</a>
                 </Comment.Actions>
                 {username === user?.username && <>
-                  <Button size='mini' color='red' floated='right' onClick={() => deleteAnswer(id, selectedQuestion.id)}>Delete</Button>
-                  <Button size='mini' floated='right' onClick={() => openModal(<AnswerForm question={selectedQuestion} message={message} answerId={id} />)}>Edit</Button>
+                  <Button size='mini' color='red' floated='left' onClick={() => deleteAnswer(id, selectedQuestion.id)}>Delete</Button>
+                  <Button size='mini' floated='left' onClick={() => openModal(<AnswerForm question={selectedQuestion} message={message} answerId={id} />)}>Edit</Button>
                 </>
                 }
               </Comment.Content>
