@@ -14,6 +14,8 @@ namespace Application.Questions
             // CreateMap<QuestionCategory, string>()
             // .ForMember(s => s, o => o.MapFrom(s => s.Category.Id));
             CreateMap<QuestionCategory, string>().ConstructUsing(s => s.Category.Id);
+            CreateMap<LikedQuestion, string>().ConstructUsing(s => s.Question.Id);
+            CreateMap<DislikedQuestion, string>().ConstructUsing(s => s.Question.Id);
         }
     }
 }

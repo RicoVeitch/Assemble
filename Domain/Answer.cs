@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Domain
 {
@@ -10,5 +11,7 @@ namespace Domain
         public virtual Question Question { get; set; }
         public virtual User Author { get; set; }
         public DateTime CreatedAt { get; set; }
+        public virtual ICollection<LikedAnswer> LikedAnswers { get; set; }
+        public virtual ICollection<DislikedAnswer> DislikedAnswers { get; set; }
     }
 }

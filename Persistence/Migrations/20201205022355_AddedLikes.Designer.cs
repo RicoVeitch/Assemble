@@ -9,8 +9,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201203011844_AddedCategories")]
-    partial class AddedCategories
+    [Migration("20201205022355_AddedLikes")]
+    partial class AddedLikes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,9 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Message")
                         .HasColumnType("TEXT");
@@ -54,6 +57,66 @@ namespace Persistence.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Domain.DislikedAnswer", b =>
+                {
+                    b.Property<string>("AnswerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AnswerId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DislikedAnswers");
+                });
+
+            modelBuilder.Entity("Domain.DislikedQuestion", b =>
+                {
+                    b.Property<string>("QuestionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("QuestionId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DislikedQuestions");
+                });
+
+            modelBuilder.Entity("Domain.LikedAnswer", b =>
+                {
+                    b.Property<string>("AnswerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AnswerId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LikedAnswers");
+                });
+
+            modelBuilder.Entity("Domain.LikedQuestion", b =>
+                {
+                    b.Property<string>("QuestionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("QuestionId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LikedQuestions");
+                });
+
             modelBuilder.Entity("Domain.Question", b =>
                 {
                     b.Property<string>("Id")
@@ -67,6 +130,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
@@ -297,6 +363,66 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId");
+                });
+
+            modelBuilder.Entity("Domain.DislikedAnswer", b =>
+                {
+                    b.HasOne("Domain.Answer", "Answer")
+                        .WithMany("DislikedAnswers")
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("DislikedAnswers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.DislikedQuestion", b =>
+                {
+                    b.HasOne("Domain.Question", "Question")
+                        .WithMany("DislikedQuestions")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("DislikedQuestions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.LikedAnswer", b =>
+                {
+                    b.HasOne("Domain.Answer", "Answer")
+                        .WithMany("LikedAnswers")
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("LikedAnswers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.LikedQuestion", b =>
+                {
+                    b.HasOne("Domain.Question", "Question")
+                        .WithMany("LikedQuestions")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("LikedQuestions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Question", b =>

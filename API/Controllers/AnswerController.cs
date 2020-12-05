@@ -45,14 +45,14 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<Unit>> Like(string id)
         {
-            return await _mediator.Send(new Vote.Command { Id = id, Offset = 1 });
+            return await _mediator.Send(new Like.Command { Id = id });
         }
 
         [HttpPut("dislike/{id}")]
         [Authorize]
         public async Task<ActionResult<Unit>> Dislike(string id)
         {
-            return await _mediator.Send(new Vote.Command { Id = id, Offset = -1 });
+            return await _mediator.Send(new Dislike.Command { Id = id });
         }
 
 

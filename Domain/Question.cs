@@ -13,5 +13,7 @@ namespace Domain
         public virtual User Author { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
         public virtual ICollection<QuestionCategory> QuestionCategories { get; set; }
+        public virtual ICollection<LikedQuestion> LikedQuestions { get; set; }
+        public virtual ICollection<DislikedQuestion> DislikedQuestions { get; set; }
     }
 }

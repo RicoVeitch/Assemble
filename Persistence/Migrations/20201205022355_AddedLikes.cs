@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class AddedCategories : Migration
+    public partial class AddedLikes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -171,6 +171,7 @@ namespace Persistence.Migrations
                     Id = table.Column<string>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
+                    Likes = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     AuthorId = table.Column<string>(nullable: true)
                 },
@@ -191,6 +192,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Message = table.Column<string>(nullable: true),
+                    Likes = table.Column<int>(nullable: false),
                     QuestionId = table.Column<string>(nullable: true),
                     AuthorId = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false)
@@ -213,6 +215,54 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DislikedQuestions",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    QuestionId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DislikedQuestions", x => new { x.QuestionId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_DislikedQuestions_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DislikedQuestions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LikedQuestions",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    QuestionId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikedQuestions", x => new { x.QuestionId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_LikedQuestions_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LikedQuestions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "QuestionCategories",
                 columns: table => new
                 {
@@ -232,6 +282,54 @@ namespace Persistence.Migrations
                         name: "FK_QuestionCategories_Questions_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DislikedAnswers",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    AnswerId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DislikedAnswers", x => new { x.AnswerId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_DislikedAnswers_Answers_AnswerId",
+                        column: x => x.AnswerId,
+                        principalTable: "Answers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DislikedAnswers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LikedAnswers",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    AnswerId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikedAnswers", x => new { x.AnswerId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_LikedAnswers_Answers_AnswerId",
+                        column: x => x.AnswerId,
+                        principalTable: "Answers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LikedAnswers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -284,6 +382,26 @@ namespace Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_DislikedAnswers_UserId",
+                table: "DislikedAnswers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DislikedQuestions_UserId",
+                table: "DislikedQuestions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikedAnswers_UserId",
+                table: "LikedAnswers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LikedQuestions_UserId",
+                table: "LikedQuestions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QuestionCategories_CategoryId",
                 table: "QuestionCategories",
                 column: "CategoryId");
@@ -296,9 +414,6 @@ namespace Persistence.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Answers");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -315,10 +430,25 @@ namespace Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "DislikedAnswers");
+
+            migrationBuilder.DropTable(
+                name: "DislikedQuestions");
+
+            migrationBuilder.DropTable(
+                name: "LikedAnswers");
+
+            migrationBuilder.DropTable(
+                name: "LikedQuestions");
+
+            migrationBuilder.DropTable(
                 name: "QuestionCategories");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Answers");
 
             migrationBuilder.DropTable(
                 name: "Categories");
