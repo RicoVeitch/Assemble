@@ -1,5 +1,5 @@
 
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import agent from '../api/agent';
@@ -20,24 +20,43 @@ export default class QuestionStore {
   @observable selectedQuestion: IQuestion | null = null;
   @observable submitting: boolean = false;
   @observable fetchingList: boolean = false;
+  @observable predicates = new Map();
 
-  @computed get activitiesByDate() {
+  @computed get questionsByDate() {
     return Array.from(this.questions.values()).sort(
       (a, b) => a.date.getTime() - b.date.getTime()
     );
   }
 
+  @computed get axiosParams() {
+    const params = new URLSearchParams();
+    this.predicates.forEach((value, key) => {
+      params.append(key, value);
+    })
+    return params;
+  }
+
+  @action setPredicate = (key: string, value: string) => {
+    this.predicates.clear();
+    if(key !== 'all') {
+      this.predicates.set(key, value);
+    }
+    this.questions.clear();
+    this.loadQuestions();
+  }
+
+
   @action loadQuestions = async () => {
     this.fetchingList = true;
     try {
-      const response = await agent.Questions.list();
+      const response = await agent.Questions.list(this.axiosParams);
       runInAction(() => {
         response.forEach(question => {
           question.date = new Date(question.date);
           question.asked = question.username === this.rootStore.userStore.user?.username;
           this.questions.set(question.id, question);
-          this.fetchingList = false;
         });
+        this.fetchingList = false;
       });
     } catch(error) {
       runInAction(() => {

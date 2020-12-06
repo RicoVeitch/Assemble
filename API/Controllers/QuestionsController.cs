@@ -19,9 +19,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<QuestionDto>>> List()
+        public async Task<ActionResult<List<QuestionDto>>> List(bool likedQuestions, bool unansweredQuestions, string categories)
         {
-            return await _mediator.Send(new List.Query());
+            return await _mediator.Send(new List.Query(likedQuestions, unansweredQuestions, categories));
         }
 
         [HttpGet("{id}")]

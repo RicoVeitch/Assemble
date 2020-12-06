@@ -40,7 +40,7 @@ const requests = {
 };
 
 const Questions = {
-  list: (): Promise<IQuestion[]> => requests.get('/Questions'),
+  list: (params: URLSearchParams): Promise<IQuestion[]> => axios.get('/Questions', {params: params}).then(responseBody),
   create: (question: IQuestion) => requests.post('/Questions', question),
   edit: (question: IQuestion) => requests.put(`/Questions/${question.id}`, question),
   delete: (id: string) => requests.del(`/Questions/${id}`),

@@ -6,12 +6,12 @@ import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const QuestionList = () => {
   const rootStore = useContext(RootStoreContext);
-  const { activitiesByDate } = rootStore.questionStore;
+  const { questionsByDate } = rootStore.questionStore;
 
   return (
     <Fragment>
       <Item.Group divided>
-        {activitiesByDate.map(question => (
+        {questionsByDate.map(question => (
           <QuestionListItem key={question.id} question={question} />
         ))}
       </Item.Group>

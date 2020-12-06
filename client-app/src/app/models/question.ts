@@ -36,7 +36,7 @@ export class QuestionFormValues implements IQuestion {
 export const categories = [
   { key: 'Biology', text: 'Biology', value: 'Biology' },
   { key: 'Theology', text: 'Theology', value: 'Theology' },
-  { key: 'Computer Science', text: 'Computer Science', value: 'Computer Science' },
+  { key: 'Computer-Science', text: 'Computer-Science', value: 'Computer-Science' },
   { key: 'hardware', text: 'Hardware', value: 'Hardware' },
   { key: 'Economics', text: 'Economics', value: 'Economics' },
   { key: 'History', text: 'History', value: 'History' },

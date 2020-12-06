@@ -42,7 +42,7 @@ const QuestionForm: React.FC<IProps> = ({ id }) => {
       let newQuestion: IQuestion = { ...question, ...values, date: new Date().toJSON() };
       editQuestion(newQuestion);
     } else {
-      let newQuestion: IQuestion = { ...values, asked: true, id: uuid(), date: new Date().toJSON() };
+      let newQuestion: IQuestion = { ...question, ...values, asked: true, id: uuid(), date: new Date().toJSON() };
       createQuestion(newQuestion);
     }
     closeModal();

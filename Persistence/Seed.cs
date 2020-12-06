@@ -43,7 +43,7 @@ namespace Persistence
                     },
                     new Category
                     {
-                        Id = "Computer Science"
+                        Id = "Computer-Science"
                     },
                     new Category
                     {
