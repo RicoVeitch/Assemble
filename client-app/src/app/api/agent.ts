@@ -4,6 +4,7 @@ import {history} from '../..';
 import { toast } from 'react-toastify';
 import { IUser, IUserFormValues } from '../models/user';
 import { IAnswer } from '../models/answer';
+import { ICategory } from '../models/category';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -64,8 +65,13 @@ const Users = {
   getCurrentUser: () : Promise<IUser> => requests.get('/User')
 }
 
+const Categories = {
+  list: (): Promise<ICategory> => requests.get('/Category')
+}
+
 export default {
   Questions,
   Users,
-  Answers
+  Answers,
+  Categories
 };

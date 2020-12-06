@@ -22,11 +22,12 @@ export default class QuestionStore {
   @observable fetchingList: boolean = false;
   @observable filterMethod = new Map();
   @observable sortMethod: string = 'mostRecent';
+  @observable popularCategories: [] = [];
 
   @computed get sortBy() {
-    if(this.sortMethod == 'mostRecent') {
+    if(this.sortMethod === 'mostRecent') {
       return this.questionsByDate;
-    } else if (this.sortMethod == 'mostPopular') {
+    } else if (this.sortMethod === 'mostPopular') {
       return this.questionsByLikes;
     } else {
       return this.questionsByAnswers;
