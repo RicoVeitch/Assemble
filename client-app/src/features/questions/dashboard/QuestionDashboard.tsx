@@ -17,10 +17,10 @@ const QuestionDashboard = () => {
 
   return (
     <Grid>
-      <Grid.Column width={3}>
+      <Grid.Column width={2}>
         <div>Popular categories</div>
       </Grid.Column>
-      <Grid.Column width={8}>
+      <Grid.Column width={9}>
         {fetchingList ? <QuestionListPlaceholder /> : <QuestionList />}
       </Grid.Column>
       <Grid.Column width={5}>

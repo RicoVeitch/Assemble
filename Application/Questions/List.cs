@@ -17,6 +17,9 @@ namespace Application.Questions
     {
         public class Query : IRequest<List<QuestionDto>>
         {
+            public bool LikedQuestions { get; set; }
+            public bool UnansweredQuestions { get; set; }
+            public string SelectedCategories { get; set; }
             public Query(bool likedQuestions, bool unansweredQuestions, string categories)
             {
                 LikedQuestions = likedQuestions;
@@ -24,9 +27,6 @@ namespace Application.Questions
                 SelectedCategories = categories;
 
             }
-            public bool LikedQuestions { get; set; }
-            public bool UnansweredQuestions { get; set; }
-            public string SelectedCategories { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, List<QuestionDto>>
@@ -54,12 +54,11 @@ namespace Application.Questions
                         queryable = queryable.Where(x => x.QuestionCategories.Any(qc => qc.CategoryId == category));
                     }
                 }
-
-                if (request.LikedQuestions)
+                else if (request.LikedQuestions)
                 {
                     queryable = queryable.Where(x => x.LikedQuestions.Any(lq => lq.User.UserName == _userAccessor.GetCurrentUsername()));
                 }
-                if (request.UnansweredQuestions)
+                else if (request.UnansweredQuestions)
                 {
                     queryable = queryable.Where(x => x.Answers.Count == 0);
                 }

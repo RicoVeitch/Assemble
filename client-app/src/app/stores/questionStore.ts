@@ -20,26 +20,53 @@ export default class QuestionStore {
   @observable selectedQuestion: IQuestion | null = null;
   @observable submitting: boolean = false;
   @observable fetchingList: boolean = false;
-  @observable predicates = new Map();
+  @observable filterMethod = new Map();
+  @observable sortMethod: string = 'mostRecent';
+
+  @computed get sortBy() {
+    if(this.sortMethod == 'mostRecent') {
+      return this.questionsByDate;
+    } else if (this.sortMethod == 'mostPopular') {
+      return this.questionsByLikes;
+    } else {
+      return this.questionsByAnswers;
+    }
+  }
+
+  @computed get questionsByAnswers() {
+    return Array.from(this.questions.values()).sort(
+      (a, b) => b.answers.length - a.answers.length
+    );
+  }
 
   @computed get questionsByDate() {
     return Array.from(this.questions.values()).sort(
-      (a, b) => a.date.getTime() - b.date.getTime()
+      (a, b) => b.date.getTime() - a.date.getTime()
+    );
+  }
+
+  @computed get questionsByLikes() {
+    return Array.from(this.questions.values()).sort(
+      (a, b) => b.likes - a.likes
     );
   }
 
   @computed get axiosParams() {
     const params = new URLSearchParams();
-    this.predicates.forEach((value, key) => {
+    this.filterMethod.forEach((value, key) => {
       params.append(key, value);
     })
     return params;
   }
 
-  @action setPredicate = (key: string, value: string) => {
-    this.predicates.clear();
+  @action setSortMethod = (method: string) => {
+    this.sortMethod = method;
+  }
+
+  @action setFilterMethod = (key: string, value: string) => {
+    this.filterMethod.clear();
     if(key !== 'all') {
-      this.predicates.set(key, value);
+      this.filterMethod.set(key, value);
     }
     this.questions.clear();
     this.loadQuestions();

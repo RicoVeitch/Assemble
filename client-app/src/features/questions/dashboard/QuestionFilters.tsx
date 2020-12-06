@@ -1,41 +1,41 @@
 import { observer } from 'mobx-react-lite';
 import React, { Fragment, useContext } from 'react'
-import { Dropdown, DropdownProps, Header, Input, Menu, Statistic } from 'semantic-ui-react'
+import { Dropdown, DropdownProps, Header, Input, Menu, Segment, Statistic } from 'semantic-ui-react'
 import { categories } from '../../../app/models/question';
 import { RootStoreContext } from '../../../app/stores/rootStore'
 
 const QuestionFilters = () => {
   const rootStore = useContext(RootStoreContext);
-  const { setPredicate, predicates, questions } = rootStore.questionStore;
+  const { setFilterMethod, filterMethod, questions } = rootStore.questionStore;
   const handleCategory = (data: string | number | boolean | (string | number | boolean)[] | undefined) => {
     console.log(data);
     if (Array.isArray(data)) {
       console.log(data.join('+'));
-      setPredicate('categories', data.join('+'));
+      setFilterMethod('categories', data.join('+'));
     }
   }
   return (
-    <Fragment>
+    <Segment>
       <Statistic value={questions.size} label='Questions' color='green' style={{ marginLeft: '8em' }} />
       <Menu vertical size={'large'} style={{ width: '100%', marginTop: 50 }}>
         <Header icon={'filter'} attached color={'teal'} content={'Filters'} />
         <Menu.Item
-          active={predicates.size === 0}
-          onClick={() => setPredicate('all', 'true')}
+          active={filterMethod.size === 0}
+          onClick={() => setFilterMethod('all', 'true')}
           color={'blue'}
           name={'all'}
           content={'All Questions'}
         />
         <Menu.Item
-          active={predicates.has('likedQuestions')}
-          onClick={() => setPredicate('likedQuestions', 'true')}
+          active={filterMethod.has('likedQuestions')}
+          onClick={() => setFilterMethod('likedQuestions', 'true')}
           color={'blue'}
           name={'liked questions'}
           content={"Liked Questions"}
         />
         <Menu.Item
-          active={predicates.has('unansweredQuestions')}
-          onClick={() => setPredicate('unansweredQuestions', 'true')}
+          active={filterMethod.has('unansweredQuestions')}
+          onClick={() => setFilterMethod('unansweredQuestions', 'true')}
           color={'blue'}
           name={'host'}
           content={"Unanswered Questions"}
@@ -60,7 +60,7 @@ const QuestionFilters = () => {
         </Dropdown.Menu>
       </Dropdown> */}
 
-    </Fragment>
+    </Segment>
   )
 }
 
