@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import QuestionListItem from './QuestionListItem'
 import { observer } from 'mobx-react-lite';
-import { Input, Item, Menu, MenuItemProps, Segment } from 'semantic-ui-react';
+import { Item, Menu, Segment } from 'semantic-ui-react';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const QuestionList = () => {
@@ -10,19 +10,7 @@ const QuestionList = () => {
 
   return (
     <Segment>
-      {/* <Menu>
-        <Menu.Item>
-          <Input className='icon' icon='search' placeholder='Search...' />
-        </Menu.Item>
-
-        <Menu.Item position='right'>
-          <Input
-            action={{ type: 'submit', content: 'Go' }}
-            placeholder='Navigate to...'
-          />
-        </Menu.Item>
-      </Menu> */}
-      <Menu pointing>
+      <Menu pointing fluid widths={4}>
         <Menu.Item header>Sort By</Menu.Item>
         <Menu.Item
           name='mostRecent'

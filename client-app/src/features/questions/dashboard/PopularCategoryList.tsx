@@ -15,7 +15,7 @@ const PopularCategoryList = () => {
   return (
     <Segment>
       <List divided verticalAlign='middle'>
-        <List.Header content='Popular Categories' style={{ marginBottom: '2em' }} />
+        <List.Header content='Popular Categories' style={{ marginBottom: '2em', fontFamily: ["Montserrat", "sans-serif"] }} />
         {popularCategories && popularCategories.map((category) => (
           <PopularCategoryItem key={category} category={category} />
         ))}

@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
-import { Button, Container, Dropdown, Menu } from 'semantic-ui-react'
-import QuestionForm from '../questions/form/QuestionForm';
+import { Button, Dropdown, Input, Menu, Segment } from 'semantic-ui-react'
 import { RootStoreContext } from '../../app/stores/rootStore';
 import LoginForm from '../user/LoginForm';
 import RegisterForm from '../user/RegisterForm';
@@ -13,24 +12,21 @@ const NavBar: React.FC = () => {
   const { openModal } = rootStore.modalStore;
   const { user, logout } = rootStore.userStore;
 
-  const handleCreateQuestion = () => {
-    if (user) {
-      openModal(<QuestionForm />);
-    } else {
-      openModal(<LoginForm />);
-    }
-  }
-
   return (
-    <Menu fixed='top' inverted>
-      <Container>
-        <Menu.Item header as={Link} to={'/'} >Assemble</Menu.Item>
-        <Menu.Item header as={Link} to={'/'} name='Questions' />
-        <Menu.Item>
-          <Button onClick={handleCreateQuestion} positive content='Create Question' />
-        </Menu.Item>
-        {user ? (
-          <Menu.Item position='right'>
+    <header>
+      <Button style={{ backgroundColor: 'rgb(47, 54, 74)' }} as={Link} to={'/'}>
+        <img className='logo' src='/logosmall.png' alt='logo' />
+      </Button>
+
+      <Input
+        icon={{ name: 'search', circular: true, link: true }}
+        placeholder='Search Questions...'
+        style={{ width: '45%', marginRight: '10em' }}
+      />
+
+      {user ? (
+        <Menu.Item >
+          <Segment>
             <Dropdown pointing='top left' text={user.displayName}>
               <Dropdown.Menu>
                 <Dropdown.Item
@@ -42,13 +38,16 @@ const NavBar: React.FC = () => {
                 <Dropdown.Item onClick={logout} text='Logout' icon='power' />
               </Dropdown.Menu>
             </Dropdown>
-          </Menu.Item>
-        ) : (<>
-          <Menu.Item header onClick={() => openModal(<LoginForm />)} name='Login' />
-          <Menu.Item header onClick={() => openModal(<RegisterForm />)} name='Register' />
-        </>)}
-      </Container>
-    </Menu>
+          </Segment>
+        </Menu.Item>
+      ) : (<>
+        <Button.Group size='small'>
+          <Button positive onClick={() => openModal(<LoginForm />)}>Sign in</Button>
+          <Button.Or />
+          <Button color='blue' onClick={() => openModal(<RegisterForm />)}>Register</Button>
+        </Button.Group>
+      </>)}
+    </header>
   )
 }
 
