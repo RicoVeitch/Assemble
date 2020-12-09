@@ -38,3 +38,11 @@ header {
 .plus.circle.icon::before {
   margin-left: 15px;
 }
+
+.description {
+  -webkit-mask-image: -webkit-linear-gradient(
+    top,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0) 120%
+  );
+}
