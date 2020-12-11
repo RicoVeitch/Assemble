@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
-import React, { Fragment, useContext } from 'react'
-import { Dropdown, DropdownProps, Header, Input, Menu, Segment, Statistic } from 'semantic-ui-react'
+import React, { useContext } from 'react'
+import { Dropdown, Header, Menu, Segment, Statistic } from 'semantic-ui-react'
 import { categories } from '../../../app/models/question';
 import { RootStoreContext } from '../../../app/stores/rootStore'
 

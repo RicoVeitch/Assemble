@@ -14,17 +14,17 @@ const QuestionList = () => {
         <Menu.Item header>Sort By</Menu.Item>
         <Menu.Item
           name='mostRecent'
-          active={sortMethod == 'mostRecent'}
+          active={sortMethod === 'mostRecent'}
           onClick={() => setSortMethod('mostRecent')}
         />
         <Menu.Item
           name='mostPopular'
-          active={sortMethod == 'mostPopular'}
+          active={sortMethod === 'mostPopular'}
           onClick={() => setSortMethod('mostPopular')}
         />
         <Menu.Item
           name='mostAnswers'
-          active={sortMethod == 'mostAnswers'}
+          active={sortMethod === 'mostAnswers'}
           onClick={() => setSortMethod('mostAnswers')}
         />
       </Menu>

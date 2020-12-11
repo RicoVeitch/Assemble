@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MediatR;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +18,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<QuestionDto>>> List(bool likedQuestions, bool unansweredQuestions, string categories)
+        public async Task<ActionResult<List<QuestionDto>>> List(bool likedQuestions, bool unansweredQuestions, string categories, string searchTerms)
         {
-            return await _mediator.Send(new List.Query(likedQuestions, unansweredQuestions, categories));
+            return await _mediator.Send(new List.Query(likedQuestions, unansweredQuestions, categories, searchTerms));
         }
 
         [HttpGet("{id}")]

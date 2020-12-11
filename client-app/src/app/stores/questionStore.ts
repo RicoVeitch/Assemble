@@ -22,6 +22,7 @@ export default class QuestionStore {
   @observable fetchingList: boolean = false;
   @observable filterMethod = new Map();
   @observable sortMethod: string = 'mostRecent';
+  @observable query: string = '';
   @observable popularCategories: [] = [];
 
   @computed get sortBy() {
@@ -57,6 +58,12 @@ export default class QuestionStore {
     this.filterMethod.forEach((value, key) => {
       params.append(key, value);
     })
+    runInAction(() => {
+      if(this.query) {
+        params.append('searchTerms', this.query);
+      }
+      this.questions.clear();
+    })
     return params;
   }
 
@@ -69,7 +76,13 @@ export default class QuestionStore {
     if(key !== 'all') {
       this.filterMethod.set(key, value);
     }
-    this.questions.clear();
+    this.loadQuestions();
+  }
+
+  @action setQuery = (query: string) => {
+    runInAction(() => {
+      this.query = query;
+    })
     this.loadQuestions();
   }
 

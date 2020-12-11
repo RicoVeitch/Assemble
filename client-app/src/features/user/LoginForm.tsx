@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Button, Form, Header, Message } from 'semantic-ui-react';
+import { Button, Form, Header } from 'semantic-ui-react';
 import { Form as FinalForm, Field } from 'react-final-form';
 import TextInput from '../../app/common/form/TextInput';
 import { combineValidators, isRequired } from 'revalidate';

@@ -20,11 +20,13 @@ namespace Application.Questions
             public bool LikedQuestions { get; set; }
             public bool UnansweredQuestions { get; set; }
             public string SelectedCategories { get; set; }
-            public Query(bool likedQuestions, bool unansweredQuestions, string categories)
+            public string SearchTerms { get; set; }
+            public Query(bool likedQuestions, bool unansweredQuestions, string categories, string searchTerms)
             {
                 LikedQuestions = likedQuestions;
                 UnansweredQuestions = unansweredQuestions;
                 SelectedCategories = categories;
+                SearchTerms = searchTerms;
 
             }
         }
@@ -45,6 +47,7 @@ namespace Application.Questions
             {
                 // var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
                 var queryable = _context.Questions.AsQueryable();
+                List<Question> questions;
 
                 if (request.SelectedCategories != null)
                 {
@@ -63,8 +66,21 @@ namespace Application.Questions
                     queryable = queryable.Where(x => x.Answers.Count == 0);
                 }
 
+                if (request.SearchTerms != null)
+                {
+                    List<string> terms = request.SearchTerms.Split(' ').ToList();
+                    questions = new List<Question>();
+                    foreach (string term in terms)
+                    {
+                        string tl = term.ToLower();
+                        var result = queryable.Where(x => x.Title.ToLower().Contains(tl) || x.Description.ToLower().Contains(tl)).ToList().Except(questions);
+                        questions.AddRange(result);
+                    }
+                    return _mapper.Map<List<Question>, List<QuestionDto>>(questions);
+                }
+
                 // var questions = await _context.Questions.ToListAsync();
-                var questions = await queryable.ToListAsync();
+                questions = await queryable.ToListAsync();
 
                 return _mapper.Map<List<Question>, List<QuestionDto>>(questions);
             }

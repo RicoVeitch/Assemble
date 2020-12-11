@@ -14,7 +14,7 @@ interface IProps {
 const VoteButton: React.FC<IProps> = ({ buttonSize, iconSize, likes, questionId, answerId }) => {
   // const buttonColor = 'grey'
   const rootStore = useContext(RootStoreContext);
-  const { likeQuestion, dislikeQuestion, selectedQuestion } = rootStore.questionStore;
+  const { likeQuestion, dislikeQuestion } = rootStore.questionStore;
   const { likeAnswer, dislikeAnswer } = rootStore.answerStore;
   const handleLike = () => {
     if (answerId) {
