@@ -1,15 +1,28 @@
 import React, { useContext } from 'react'
 import QuestionListItem from './QuestionListItem'
 import { observer } from 'mobx-react-lite';
-import { Item, Menu, Segment } from 'semantic-ui-react';
+import { Button, Icon, Item, Menu, Segment } from 'semantic-ui-react';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const QuestionList = () => {
   const rootStore = useContext(RootStoreContext);
-  const { sortBy, setSortMethod, sortMethod } = rootStore.questionStore;
+  const { sortBy, setSortMethod, sortMethod, query, clearQuery } = rootStore.questionStore;
 
   return (
     <Segment>
+      {query &&
+        <Menu fluid widths={1}>
+          <Menu.Item header>
+            Results for: {query}
+            <Button circular icon size='mini'
+              basic style={{ marginLeft: '1em' }}
+              onClick={clearQuery}
+            >
+              <Icon name='cancel' />
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
       <Menu pointing fluid widths={4}>
         <Menu.Item header>Sort By</Menu.Item>
         <Menu.Item

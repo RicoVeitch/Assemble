@@ -7,6 +7,7 @@ import { RootStoreContext } from '../../../app/stores/rootStore'
 const QuestionFilters = () => {
   const rootStore = useContext(RootStoreContext);
   const { setFilterMethod, filterMethod, questions } = rootStore.questionStore;
+  const { user } = rootStore.userStore;
   const handleCategory = (data: string | number | boolean | (string | number | boolean)[] | undefined) => {
     console.log(data);
     if (Array.isArray(data)) {
@@ -32,6 +33,7 @@ const QuestionFilters = () => {
           color={'blue'}
           name={'liked questions'}
           content={"Liked Questions"}
+          disabled={!user}
         />
         <Menu.Item
           active={filterMethod.has('unansweredQuestions')}

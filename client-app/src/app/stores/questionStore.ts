@@ -1,5 +1,5 @@
 
-import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import agent from '../api/agent';
@@ -82,6 +82,13 @@ export default class QuestionStore {
   @action setQuery = (query: string) => {
     runInAction(() => {
       this.query = query;
+    })
+    this.loadQuestions();
+  }
+
+  @action clearQuery = () => {
+    runInAction(() => {
+      this.query = '';
     })
     this.loadQuestions();
   }
