@@ -72,6 +72,11 @@ export default class QuestionStore {
   }
 
   @action setFilterMethod = (key: string, value: string) => {
+    if(this.filterMethod.has(key) && this.filterMethod.get(key) === value) {
+      this.filterMethod.clear();
+      this.loadQuestions();
+      return;
+    }
     this.filterMethod.clear();
     if(key !== 'all') {
       this.filterMethod.set(key, value);

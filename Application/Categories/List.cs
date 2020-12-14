@@ -12,6 +12,7 @@ namespace Application.Categories
 {
     public class List
     {
+        private const int MAX_CATEGORIES = 7;
         public class Query : IRequest<CategoryDto> { }
 
         public class Handler : IRequestHandler<Query, CategoryDto>
@@ -26,7 +27,7 @@ namespace Application.Categories
 
             public async Task<CategoryDto> Handle(Query request, CancellationToken cancellationToken)
             {
-                var categories = await _context.Categories.OrderByDescending(x => x.QuestionCategories.Count).ToListAsync();
+                var categories = await _context.Categories.OrderByDescending(x => x.QuestionCategories.Count).Take(MAX_CATEGORIES).ToListAsync();
 
                 return new CategoryDto
                 {

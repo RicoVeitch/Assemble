@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, runInAction, toJS} from 'mobx';
+import { action, makeObservable, observable, runInAction} from 'mobx';
 import agent from '../api/agent';
 import { RootStore } from './rootStore';
 
@@ -17,7 +17,6 @@ export default class CategoryStore {
       runInAction(() => {
         this.popularCategories = categories.categories;
       })
-      console.log(toJS(this.popularCategories));
     } catch (error) {
       throw error;
     }
