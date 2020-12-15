@@ -90,6 +90,19 @@ namespace API
 
             // app.UseHttpsRedirection();
 
+            app.UseXContentTypeOptions();
+            app.UseReferrerPolicy(opt => opt.NoReferrer());
+            app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
+            app.UseXfo(opt => opt.Deny()); // click jacking
+            app.UseCsp(opt => opt
+                .BlockAllMixedContent()
+                .StyleSources(x => x.Self().CustomSources("https://fonts.googleapis.com"))
+                .FontSources(x => x.Self())
+                .FormActions(x => x.Self())
+                .ImageSources(x => x.Self())
+                .ScriptSources(x => x.Self())
+            );
+
             app.UseRouting();
 
             app.UseAuthentication();
