@@ -11,6 +11,7 @@ namespace Application.Questions
         public string Title { get; set; }
         public string Description { get; set; }
         public int Likes { get; set; }
+        public bool? Liked { get; set; }
         public string Username { get; set; }
         public string DisplayName { get; set; }
         public DateTime Date { get; set; }

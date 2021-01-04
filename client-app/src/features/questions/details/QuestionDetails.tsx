@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { Fragment, useContext, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Button, Comment, Header, Label, Segment } from 'semantic-ui-react'
+import { Button, Comment, Grid, Header, Label, Segment } from 'semantic-ui-react'
 import QuestionForm from '../form/QuestionForm';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import AnswerForm from '../form/AnswerForm';
@@ -14,7 +14,7 @@ interface DetailParams {
 
 const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match }) => {
   const rootStore = useContext(RootStoreContext);
-  const { selectedQuestion, loadQuestion, deleteQuestion, deselectQuestion, submitting } = rootStore.questionStore;
+  const { selectedQuestion, loadQuestion, deleteQuestion, deselectQuestion } = rootStore.questionStore;
   const { openModal } = rootStore.modalStore;
   const { deleteAnswer } = rootStore.answerStore;
   const { user } = rootStore.userStore;
@@ -26,33 +26,39 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
 
   return (
     <Fragment>
-      <Segment clearing style={{ marginTop: '7em' }}>
-        <Header as='h1'>{selectedQuestion?.title}</Header>
-        <p>{selectedQuestion?.description}</p>
+      <Segment clearing style={{ marginTop: '3em' }}>
+        <Grid>
+          <Grid.Column width={15}>
+            <Header as='h1'>{selectedQuestion?.title}</Header>
+            <p>{selectedQuestion?.description}</p>
 
-        {selectedQuestion?.categories.map((category, idx) => (
-          <Label key={selectedQuestion.categories[idx]} floated='left'>{category}</Label>
-        ))}
+            {selectedQuestion?.categories.map((category, idx) => (
+              <Label key={selectedQuestion.categories[idx]} floated='left'>{category}</Label>
+            ))}
 
-        <VoteButton buttonSize='mini' iconSize='small' likes={selectedQuestion?.likes} questionId={selectedQuestion?.id} />
-
-        {selectedQuestion?.asked && <>
-          <Button
-            onClick={() => openModal(<QuestionForm id={match.params.id} />)}
-            floated='left'
-            content='Edit'
-            color='blue'
-          />
-          <Button
-            // name={activity.id}
-            onClick={() => deleteQuestion(match.params.id)}
-            floated='left'
-            content='Delete'
-            color='red'
-          />
-        </>
-        }
+            {selectedQuestion?.asked && <>
+              <Button
+                onClick={() => openModal(<QuestionForm id={match.params.id} />)}
+                floated='left'
+                content='Edit'
+                color='blue'
+              />
+              <Button
+                // name={activity.id}
+                onClick={() => deleteQuestion(match.params.id)}
+                floated='left'
+                content='Delete'
+                color='red'
+              />
+            </>
+            }
+          </Grid.Column>
+          <Grid.Column width={1}>
+            <VoteButton buttonSize='mini' iconSize='small' likes={selectedQuestion?.likes} questionId={selectedQuestion?.id} />
+          </Grid.Column>
+        </Grid>
       </Segment>
+
       <Comment.Group>
         <Header as='h3' dividing>
           Answers

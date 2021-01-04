@@ -202,10 +202,9 @@ export default class QuestionStore {
     try {
       const likes = await agent.Questions.like(id);
       runInAction(() => {
-        // let question = this.questions.get(id);
-        // this.questions.get(id).likes += question.liked ? -1 : 1;
-        // this.questions.get(id).liked = !question.liked;
-        this.questions.get(id).likes = likes;
+        let question = this.questions.get(id);
+        question.likes = likes;
+        question.liked = question.liked ? null : true;
         this.selectedQuestion = this.questions.get(id);
       });
     } catch(error) {
@@ -216,7 +215,9 @@ export default class QuestionStore {
     try {
       const likes = await agent.Questions.dislike(id);
       runInAction(() => {
-        this.questions.get(id).likes = likes;
+        let question = this.questions.get(id);
+        question.likes = likes;
+        question.liked = question.liked === false ? null : false;
         this.selectedQuestion = this.questions.get(id);
       });
     } catch(error) {

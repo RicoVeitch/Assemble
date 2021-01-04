@@ -1,16 +1,12 @@
-using Application.Interfaces;
 using AutoMapper;
 using Domain;
-using System;
+
 namespace Application.Questions
 {
     public class MappingProfile : Profile
     {
-        // private readonly IUserAccessor _userAccessor;
         public MappingProfile()
         {
-            // _userAccessor = userAccessor;
-            // string currUser = _userAccessor.GetCurrentUsername();
             CreateMap<Question, QuestionDto>()
             .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
             .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName));
