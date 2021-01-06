@@ -24,6 +24,7 @@ export default class QuestionStore {
   @observable sortMethod: string = 'mostRecent';
   @observable query: string = '';
   @observable popularCategories: [] = [];
+  @observable ratedQuestions = new Map<string, boolean | null>();
 
   @computed get sortBy() {
     if(this.sortMethod === 'mostRecent') {
@@ -204,7 +205,11 @@ export default class QuestionStore {
       runInAction(() => {
         let question = this.questions.get(id);
         question.likes = likes;
-        question.liked = question.liked ? null : true;
+        if (this.ratedQuestions.has(id) && this.ratedQuestions.get(id)) {
+          this.ratedQuestions.delete(id);
+        } else {
+          this.ratedQuestions.set(id, true);
+        }
         this.selectedQuestion = this.questions.get(id);
       });
     } catch(error) {
@@ -217,10 +222,40 @@ export default class QuestionStore {
       runInAction(() => {
         let question = this.questions.get(id);
         question.likes = likes;
-        question.liked = question.liked === false ? null : false;
+        if (this.ratedQuestions.has(id) && !this.ratedQuestions.get(id)) {
+          this.ratedQuestions.delete(id);
+        } else {
+          this.ratedQuestions.set(id, false);
+        }
         this.selectedQuestion = this.questions.get(id);
       });
     } catch(error) {
+      throw error;
+    }
+  }
+
+  @observable getLikedQuestions = async () => {
+    try {
+      const likedQuestions = await agent.Questions.listLiked();
+      for(let i = 0; i < likedQuestions.length; i++) {
+        runInAction(() => {
+          this.ratedQuestions.set(likedQuestions[i], true);
+        })
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @observable getDislikedQuestions = async () => {
+    try {
+      const dislikedQuestions = await agent.Questions.listDisliked();
+      for(let i = 0; i < dislikedQuestions.length; i++) {
+        runInAction(() => {
+          this.ratedQuestions.set(dislikedQuestions[i], false);
+        })
+      }
+    } catch (error) {
       throw error;
     }
   }

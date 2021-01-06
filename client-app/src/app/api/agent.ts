@@ -42,6 +42,8 @@ const requests = {
 
 const Questions = {
   list: (params: URLSearchParams): Promise<IQuestion[]> => axios.get('/Questions', {params: params}).then(responseBody),
+  listDisliked: (): Promise<string[]> => requests.get('/Questions/disliked'),
+  listLiked: (): Promise<string[]> => requests.get('/Questions/liked'),
   create: (question: IQuestion) => requests.post('/Questions', question),
   edit: (question: IQuestion) => requests.put(`/Questions/${question.id}`, question),
   delete: (id: string) => requests.del(`/Questions/${id}`),

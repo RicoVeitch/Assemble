@@ -15,25 +15,16 @@ interface IProps {
 
 const QuestionVoteButton: React.FC<IProps> = ({ buttonSize, iconSize, likes, questionId, answerId }) => {
   const rootStore = useContext(RootStoreContext);
-  const { likeQuestion, dislikeQuestion, questions, selectedQuestion } = rootStore.questionStore;
-  const { likeAnswer, dislikeAnswer } = rootStore.answerStore;
+  const { likeQuestion, dislikeQuestion, ratedQuestions, selectedQuestion } = rootStore.questionStore;
   const { user } = rootStore.userStore;
   const { openModal } = rootStore.modalStore;
 
   const handleVote = (op: string) => {
     if (user) {
       if (op === 'like') {
-        if (answerId) {
-          likeAnswer(answerId, questionId!);
-        } else {
-          likeQuestion(questionId!)
-        }
+        likeQuestion(questionId!)
       } else {
-        if (answerId) {
-          dislikeAnswer(answerId, questionId!);
-        } else {
-          dislikeQuestion(questionId!);
-        }
+        dislikeQuestion(questionId!);
       }
     } else {
       openModal(<LoginForm />);
@@ -41,14 +32,12 @@ const QuestionVoteButton: React.FC<IProps> = ({ buttonSize, iconSize, likes, que
   }
 
   const getVoteColor = (pos: string): 'green' | 'grey' | 'red' => {
-    if (selectedQuestion) {
-      console.log(toJS(questions.get(questionId)));
-      const liked = questions.get(questionId).liked;
-      if (liked === null) {
-        return 'grey';
-      } else if (pos === 'top' && liked) {
+    if (selectedQuestion && questionId) {
+      console.log(toJS(ratedQuestions));
+      const liked = ratedQuestions.has(questionId) ? ratedQuestions.get(questionId) : null;
+      if (pos === 'top' && liked) {
         return 'green';
-      } else if (pos === 'bottom' && !liked) {
+      } else if (pos === 'bottom' && liked === false) {
         return 'red';
       }
     }

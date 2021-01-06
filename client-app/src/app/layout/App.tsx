@@ -14,14 +14,12 @@ import { RootStoreContext } from '../stores/rootStore';
 
 function App() {
   const rootStore = useContext(RootStoreContext);
-  const { token, getCurrentUser } = rootStore.userStore;
-  const { getLikedAnswers, getDislikedAnswers } = rootStore.answerStore;
+  const { token, getCurrentUser, initData } = rootStore.userStore;
 
   async function init() {
     if (token) {
       await getCurrentUser();
-      await getLikedAnswers();
-      await getDislikedAnswers();
+      await initData();
     }
   }
   init();

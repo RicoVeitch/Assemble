@@ -43,26 +43,26 @@ namespace Application.Questions
                     throw new RestException(HttpStatusCode.NotFound, new { question = "question not found" });
                 }
 
-                var result = _mapper.Map<Question, QuestionDto>(question);
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
-                if (user != null)
-                {
-                    var liked = await _context.LikedQuestions.FindAsync(question.Id, user.Id);
-                    var disliked = await _context.DislikedQuestions.FindAsync(question.Id, user.Id);
-                    bool? upvote = null;
+                return _mapper.Map<Question, QuestionDto>(question);
+                // var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
+                // if (user != null)
+                // {
+                //     var liked = await _context.LikedQuestions.FindAsync(question.Id, user.Id);
+                //     var disliked = await _context.DislikedQuestions.FindAsync(question.Id, user.Id);
+                //     bool? upvote = null;
 
-                    if (liked != null)
-                    {
-                        upvote = true;
-                    }
-                    else if (disliked != null)
-                    {
-                        upvote = false;
-                    }
-                    result.Liked = upvote;
-                    return result;
-                }
-                return result;
+                //     if (liked != null)
+                //     {
+                //         upvote = true;
+                //     }
+                //     else if (disliked != null)
+                //     {
+                //         upvote = false;
+                //     }
+                //     result.Liked = upvote;
+                //     return result;
+                // }
+                // return result;
             }
         }
     }

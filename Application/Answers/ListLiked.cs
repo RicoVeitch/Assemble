@@ -29,17 +29,7 @@ namespace Application.Answers
 
             public async Task<List<string>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var queryable = _context.LikedAnswers.AsQueryable();
-                queryable = queryable.Where(x => x.User.UserName == _userAccessor.GetCurrentUsername());
-                var answers = await queryable.ToListAsync();
-
-                List<string> result = new List<string>();
-                foreach (var answer in answers)
-                {
-                    result.Add(answer.AnswerId);
-                }
-
-                return result;
+                return await _context.LikedAnswers.Where(lq => lq.User.UserName == _userAccessor.GetCurrentUsername()).Select(d => d.AnswerId).ToListAsync();
             }
         }
     }

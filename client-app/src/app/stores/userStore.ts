@@ -78,4 +78,11 @@ export default class UserStore {
     this.token = null;
   }
 
+  @action initData = async () => {
+    await this.rootStore.answerStore.getLikedAnswers();
+    await this.rootStore.answerStore.getDislikedAnswers();
+    await this.rootStore.questionStore.getLikedQuestions();
+    await this.rootStore.questionStore.getDislikedQuestions();
+  }
+
 }

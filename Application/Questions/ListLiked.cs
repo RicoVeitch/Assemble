@@ -1,35 +1,34 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Domain;
-using MediatR;
-using Persistence;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using AutoMapper;
 using Application.Interfaces;
+using AutoMapper;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 using System.Linq;
 
-namespace Application.Answers
+namespace Application.Questions
 {
-    public class ListDisliked
+    public class ListLiked
     {
         public class Query : IRequest<List<string>> { }
 
         public class Handler : IRequestHandler<Query, List<string>>
         {
             private readonly DataContext _context;
-            private readonly IMapper _mapper;
             private readonly IUserAccessor _userAccessor;
-            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
+            private readonly IMapper _mapper;
+            public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
             {
-                _userAccessor = userAccessor;
                 _mapper = mapper;
+                _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<List<string>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.DislikedAnswers.Where(lq => lq.User.UserName == _userAccessor.GetCurrentUsername()).Select(d => d.AnswerId).ToListAsync();
+                return await _context.LikedQuestions.Where(lq => lq.User.UserName == _userAccessor.GetCurrentUsername()).Select(d => d.QuestionId).ToListAsync();
             }
         }
     }

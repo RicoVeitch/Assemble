@@ -23,6 +23,18 @@ namespace API.Controllers
             return await _mediator.Send(new List.Query(likedQuestions, unansweredQuestions, categories, searchTerms));
         }
 
+        [HttpGet("liked")]
+        public async Task<ActionResult<List<string>>> ListLiked()
+        {
+            return await _mediator.Send(new ListLiked.Query());
+        }
+
+        [HttpGet("disliked")]
+        public async Task<ActionResult<List<string>>> ListDisliked()
+        {
+            return await _mediator.Send(new ListDisliked.Query());
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<QuestionDto>> Details(string id)
         {
