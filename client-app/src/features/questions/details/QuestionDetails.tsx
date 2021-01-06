@@ -23,7 +23,7 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
   useEffect(() => {
     loadQuestion(match.params.id);
     return deselectQuestion;
-  }, [loadQuestion, match.params.id, deselectQuestion]);
+  }, [loadQuestion, match.params.id, deselectQuestion, user]);
 
   return (
     <Fragment>
@@ -37,7 +37,7 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
               <Label key={selectedQuestion.categories[idx]} floated='left'>{category}</Label>
             ))}
 
-            {selectedQuestion?.asked && <>
+            {user && selectedQuestion?.asked && <>
               <Button
                 onClick={() => openModal(<QuestionForm id={match.params.id} />)}
                 floated='left'
@@ -75,9 +75,9 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
                 </Comment.Metadata>
                 <Comment.Text>{message}</Comment.Text>
                 <AnswerVoteButton buttonSize='mini' iconSize='small' likes={likes} questionId={selectedQuestion.id} answerId={id} />
-                <Comment.Actions>
+                {/* <Comment.Actions>
                   <a>Reply</a>
-                </Comment.Actions>
+                </Comment.Actions> */}
                 {username === user?.username && <>
                   <Button size='mini' color='red' floated='left' onClick={() => deleteAnswer(id, selectedQuestion.id)}>Delete</Button>
                   <Button size='mini' floated='left' onClick={() => openModal(<AnswerForm question={selectedQuestion} message={message} answerId={id} />)}>Edit</Button>

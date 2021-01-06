@@ -1,4 +1,3 @@
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react'
 import { Button, Icon, Statistic } from 'semantic-ui-react'
@@ -35,7 +34,6 @@ const AnswerVoteButton: React.FC<IProps> = ({ buttonSize, iconSize, likes, quest
   const getVoteColor = (pos: string): 'green' | 'grey' | 'red' => {
     if (selectedQuestion && answerId) {
       const liked = ratedAnswers.has(answerId) ? ratedAnswers.get(answerId) : null;
-      console.log(liked);
       if (pos === 'top' && liked) {
         return 'green';
       } else if (pos === 'bottom' && liked === false) {

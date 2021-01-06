@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import QuestionDashboard from '../../features/questions/dashboard/QuestionDashboard';
-// import 'semantic-ui-css/semantic.min.css'
-// import  NavBar from '../../features/nav/NavBar';
 import { Container } from 'semantic-ui-react';
 import { Route } from 'react-router-dom';
 import QuestionDetails from '../../features/questions/details/QuestionDetails';

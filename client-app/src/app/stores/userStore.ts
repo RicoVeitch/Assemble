@@ -4,7 +4,6 @@ import agent from "../api/agent";
 import { IUser, IUserFormValues } from "../models/user";
 import { RootStore } from "./rootStore";
 
-
 export default class UserStore {
   rootStore: RootStore;
   constructor(rootStore: RootStore) {
@@ -41,6 +40,7 @@ export default class UserStore {
       });
       this.setToken(user.token);
       this.rootStore.modalStore.closeModal();
+      this.initData();
     } catch(error) {
       throw error;
     }
@@ -76,6 +76,7 @@ export default class UserStore {
     console.log(`user logged out`);
     this.user = null;
     this.token = null;
+    this.delData();
   }
 
   @action initData = async () => {
@@ -83,6 +84,11 @@ export default class UserStore {
     await this.rootStore.answerStore.getDislikedAnswers();
     await this.rootStore.questionStore.getLikedQuestions();
     await this.rootStore.questionStore.getDislikedQuestions();
+  }
+
+  @action delData = async () => {
+    this.rootStore.answerStore.ratedAnswers.clear();
+    this.rootStore.questionStore.ratedQuestions.clear();
   }
 
 }

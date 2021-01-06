@@ -11,8 +11,6 @@ export default class QuestionStore {
   }
 
   @observable submitting: boolean = false;
-  // @observable likedAnswers = new Set<string>();
-  // @observable dislikedAnswers = new Set<string>();
   @observable ratedAnswers = new Map<string, boolean | null >();
 
   @action addAnswer = async (answer: IAnswer, questionId: string) => {
@@ -20,7 +18,7 @@ export default class QuestionStore {
     try {
       await agent.Answers.create(answer);
       runInAction(() => {
-        // this.rootStore.questionStore.questions.get(questionId).answers.push(answer);
+        answer.likes = 0;
         answer.liked = null;
         this.rootStore.questionStore.questions.get(questionId).answers.set(answer.id, answer);
         this.submitting = false;
