@@ -6,7 +6,8 @@ import QuestionForm from '../form/QuestionForm';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import AnswerForm from '../form/AnswerForm';
 import { formatDistance } from 'date-fns';
-import VoteButton from '../../../app/common/vote/VoteButton';
+import QuestionVoteButton from '../../../app/common/vote/QuestionVoteButton';
+import AnswerVoteButton from '../../../app/common/vote/AnswerVoteButton';
 
 interface DetailParams {
   id: string;
@@ -53,9 +54,9 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
             </>
             }
           </Grid.Column>
-          <Grid.Column width={1}>
-            <VoteButton buttonSize='mini' iconSize='small' likes={selectedQuestion?.likes} questionId={selectedQuestion?.id} />
-          </Grid.Column>
+          {selectedQuestion && <Grid.Column width={1}>
+            <QuestionVoteButton buttonSize='mini' iconSize='small' likes={selectedQuestion.likes} questionId={selectedQuestion.id} />
+          </Grid.Column>}
         </Grid>
       </Segment>
 
@@ -64,7 +65,7 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
           Answers
         </Header>
         <Segment>
-          {selectedQuestion && selectedQuestion.answers && selectedQuestion.answers.map(({ id, username, displayName, message, createdAt, likes }) => (
+          {selectedQuestion && selectedQuestion.answers && Array.from(selectedQuestion.answers.values()).map(({ id, username, displayName, message, createdAt, likes }) => (
             <Comment key={id} style={{ marginBottom: '5em' }}>
               <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
               <Comment.Content>
@@ -73,7 +74,7 @@ const QuestionDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match })
                   <span>{formatDistance(new Date(createdAt!), new Date())} ago</span>
                 </Comment.Metadata>
                 <Comment.Text>{message}</Comment.Text>
-                <VoteButton buttonSize='mini' iconSize='small' likes={likes} questionId={selectedQuestion.id} answerId={id} />
+                <AnswerVoteButton buttonSize='mini' iconSize='small' likes={likes} questionId={selectedQuestion.id} answerId={id} />
                 <Comment.Actions>
                   <a>Reply</a>
                 </Comment.Actions>

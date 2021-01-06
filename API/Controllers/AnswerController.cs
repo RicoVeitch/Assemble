@@ -17,11 +17,18 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("liked")]
         [Authorize]
-        public async Task<ActionResult<List<AnswerDto>>> List()
+        public async Task<ActionResult<List<string>>> ListLiked()
         {
-            return await _mediator.Send(new List.Query());
+            return await _mediator.Send(new ListLiked.Query());
+        }
+
+        [HttpGet("disliked")]
+        [Authorize]
+        public async Task<ActionResult<List<string>>> ListDisliked()
+        {
+            return await _mediator.Send(new ListDisliked.Query());
         }
 
         [HttpPost]

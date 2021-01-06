@@ -10,7 +10,7 @@ export interface IQuestion {
   asked?: boolean;
   username?: string;
   displayName?: string;
-  answers: IAnswer[];
+  answers: Map<string, IAnswer>;
   categories: string[];
   // Username: string
 }
@@ -26,7 +26,7 @@ export class QuestionFormValues implements IQuestion {
   asked?: boolean | undefined = undefined;
   username?: string | undefined = undefined;
   displayName?: string | undefined = undefined;
-  answers: IAnswer[] = [];
+  answers: Map<string, IAnswer> = new Map<string, IAnswer>();
   categories: string[] = [];
 
   constructor(init?: QuestionFormValues) {

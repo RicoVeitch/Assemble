@@ -15,7 +15,8 @@ namespace Application.Questions
         public string Username { get; set; }
         public string DisplayName { get; set; }
         public DateTime Date { get; set; }
-        public ICollection<AnswerDto> Answers { get; set; }
+        // public ICollection<AnswerDto> Answers { get; set; }
+        public Dictionary<string, AnswerDto> Answers { get; set; }
         [JsonPropertyName("categories")]
         public ICollection<string> QuestionCategories { get; set; }
     }

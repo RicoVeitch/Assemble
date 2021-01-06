@@ -1,5 +1,5 @@
 
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import agent from '../api/agent';
@@ -37,7 +37,7 @@ export default class QuestionStore {
 
   @computed get questionsByAnswers() {
     return Array.from(this.questions.values()).sort(
-      (a, b) => b.answers.length - a.answers.length
+      (a, b) => b.answers.size - a.answers.size
     );
   }
 
@@ -107,6 +107,7 @@ export default class QuestionStore {
         response.forEach(question => {
           question.date = new Date(question.date);
           question.asked = question.username === this.rootStore.userStore.user?.username;
+          question.answers = new Map(Object.entries(question.answers));
           this.questions.set(question.id, question);
         });
         this.fetchingList = false;
@@ -130,16 +131,15 @@ export default class QuestionStore {
         runInAction(() => {
           question.date = new Date(question.date);
           question.asked = question.username === this.rootStore.userStore.user?.username;
+          question.answers = new Map(Object.entries(question.answers));
           this.questions.set(question.id, question);
           this.selectedQuestion = question;
         })
-
       } catch(error) {
         toast.error("Issue loading question");
         console.log(error)
       }
     }
-    // console.log(toJS(this.selectedQuestion));
   }
 
   @action createQuestion = async (question: IQuestion) => {

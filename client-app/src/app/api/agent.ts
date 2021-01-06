@@ -51,7 +51,8 @@ const Questions = {
 }
 
 const Answers = {
-  list: (): Promise<IAnswer[]> => requests.get('/Answer'),
+  listDisliked: (): Promise<string[]> => requests.get('/Answer/disliked'),
+  listLiked: (): Promise<string[]> => requests.get('/Answer/liked'),
   create: (answer: IAnswer) => requests.post('/Answer', answer),
   edit: (id: string, answer: any) => requests.put(`/Answer/${id}`, answer),
   delete: (id: string) => requests.del(`/Answer/${id}`),

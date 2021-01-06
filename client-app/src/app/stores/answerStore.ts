@@ -11,13 +11,18 @@ export default class QuestionStore {
   }
 
   @observable submitting: boolean = false;
+  // @observable likedAnswers = new Set<string>();
+  // @observable dislikedAnswers = new Set<string>();
+  @observable ratedAnswers = new Map<string, boolean | null >();
 
   @action addAnswer = async (answer: IAnswer, questionId: string) => {
-    this.submitting = true;
+    // this.submitting = true;
     try {
       await agent.Answers.create(answer);
       runInAction(() => {
-        this.rootStore.questionStore.questions.get(questionId).answers.push(answer);
+        // this.rootStore.questionStore.questions.get(questionId).answers.push(answer);
+        answer.liked = null;
+        this.rootStore.questionStore.questions.get(questionId).answers.set(answer.id, answer);
         this.submitting = false;
       })
     } catch(error) {
@@ -30,20 +35,15 @@ export default class QuestionStore {
   }
 
   @action deleteAnswer = async (answerId: string, questionId: string) => {
-    this.submitting = true;
+    // this.submitting = true;
     try {
       await agent.Answers.delete(answerId);
       let answers = this.rootStore.questionStore.questions.get(questionId).answers;
-      for(let i = 0; i < answers.length; i++) {
-        if(answers[i].id === answerId) {
-          runInAction(() => {
-            answers.splice(i, 1);
-            this.submitting = false;
-          })
-          break;
-        }
-      }
-      this.rootStore.questionStore.selectQuestion(questionId);
+      answers.delete(answerId);
+      runInAction(() => {
+        this.submitting = false;
+        this.rootStore.questionStore.selectQuestion(questionId);
+      })
     } catch(error) {
       runInAction(() => {
         this.submitting = false;
@@ -53,20 +53,15 @@ export default class QuestionStore {
   }
 
   @action editAnswer = async (answerId: string, questionId: string, message: any) => {
-    this.submitting = true;
+    // this.submitting = true;
     try {
       await agent.Answers.edit(answerId, message);
       let answers = this.rootStore.questionStore.questions.get(questionId).answers;
-      for(let i = 0; i < answers.length; i++) {
-        if(answers[i].id === answerId) {
-          runInAction(() => {
-            answers[i].message = message.message;
-            this.submitting = false;
-          })
-          break;
-        }
-      }
-      this.rootStore.questionStore.selectQuestion(questionId);
+      answers.get(answerId).message = message.message;
+      runInAction(() => {
+        this.submitting = false;
+        this.rootStore.questionStore.selectQuestion(questionId);
+      })
     } catch(error) {
       runInAction(() => {
         this.submitting = false;
@@ -77,18 +72,22 @@ export default class QuestionStore {
 
   @action likeAnswer = async (answerId: string, questionId: string) => {
     try {
-      const likes = await agent.Answers.like(answerId);
-      let answers = this.rootStore.questionStore.questions.get(questionId).answers;
-      for(let i = 0; i < answers.length; i++) {
-        if(answers[i].id === answerId) {
-          runInAction(() => {
-            answers[i].likes = likes;
-            this.submitting = false;
-          })
-          break;
+      const likes = await agent.Answers.like(answerId);      
+      runInAction(() => {
+        let answers = this.rootStore.questionStore.questions.get(questionId).answers;
+      
+        let answer = answers.get(answerId);
+        answer.likes = likes;
+        answer.liked = answer.liked ? null : true;
+
+        if (answer.liked === null) {
+          this.ratedAnswers.delete(answerId);
+        } else {
+          this.ratedAnswers.set(answerId, true);
         }
-      }
-      this.rootStore.questionStore.selectQuestion(questionId);
+        this.submitting = false;
+        this.rootStore.questionStore.selectQuestion(questionId);
+      })
     } catch (error) {
       throw error;
     }
@@ -97,17 +96,51 @@ export default class QuestionStore {
   @action dislikeAnswer = async (answerId: string, questionId: string) => {
     try {
       const likes = await agent.Answers.dislike(answerId);
-      let answers = this.rootStore.questionStore.questions.get(questionId).answers;
-      for(let i = 0; i < answers.length; i++) {
-        if(answers[i].id === answerId) {
-          runInAction(() => {
-            answers[i].likes = likes;
-            this.submitting = false;
-          })
-          break;
+
+      runInAction(() => {
+        let answers = this.rootStore.questionStore.questions.get(questionId).answers;
+        let answer = answers.get(answerId);
+        
+        answer.likes = likes;
+        answer.liked = answer.liked === false ? null : false;
+        
+        if (answer.liked === null) {
+          this.ratedAnswers.delete(answerId);
+        } else {
+          this.ratedAnswers.set(answerId, false);
         }
+        
+        this.submitting = false;
+        this.rootStore.questionStore.selectQuestion(questionId);
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @action getLikedAnswers = async () => {
+    try {
+      const likedAnswers = await agent.Answers.listLiked();
+      for(let i = 0; i < likedAnswers.length; i++) {
+        runInAction(() => {
+          // this.likedAnswers.add(likedAnswers[i]);
+          this.ratedAnswers.set(likedAnswers[i], true);
+        })
       }
-      this.rootStore.questionStore.selectQuestion(questionId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @action getDislikedAnswers = async () => {
+    try {
+      const dislikedAnswers = await agent.Answers.listDisliked();
+      for(let i = 0; i < dislikedAnswers.length; i++) {
+        runInAction(() => {
+          // this.dislikedAnswers.add(dislikedAnswers[i]);
+          this.ratedAnswers.set(dislikedAnswers[i], false);
+        })
+      }
     } catch (error) {
       throw error;
     }

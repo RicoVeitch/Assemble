@@ -25,7 +25,7 @@ const QuestionListItem: React.FC<{ question: IQuestion }> = ({ question }) => {
               size='large' circular
               style={{ marginTop: '1em', marginRight: '2em' }}
             >
-              {question.answers.length}
+              {question.answers.size}
               <Label.Detail>Answers</Label.Detail>
             </Label>
             <Item.Meta>Asked {formatDistance(question.date, new Date())} ago</Item.Meta>

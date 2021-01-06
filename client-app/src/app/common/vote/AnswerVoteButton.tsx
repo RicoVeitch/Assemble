@@ -1,9 +1,9 @@
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react'
-import { Button, Icon, SemanticCOLORS, Statistic } from 'semantic-ui-react'
+import { Button, Icon, Statistic } from 'semantic-ui-react'
 import LoginForm from '../../../features/user/LoginForm';
-import { RootStoreContext } from '../../stores/rootStore'
+import { RootStoreContext } from '../../stores/rootStore';
 
 interface IProps {
   buttonSize: "big" | "small" | "mini" | "tiny" | "large" | "huge" | "medium" | "massive" | undefined;
@@ -13,27 +13,19 @@ interface IProps {
   answerId?: string;
 }
 
-const VoteButton: React.FC<IProps> = ({ buttonSize, iconSize, likes, questionId, answerId }) => {
+const AnswerVoteButton: React.FC<IProps> = ({ buttonSize, iconSize, likes, questionId, answerId }) => {
   const rootStore = useContext(RootStoreContext);
-  const { likeQuestion, dislikeQuestion, questions, selectedQuestion } = rootStore.questionStore;
-  const { likeAnswer, dislikeAnswer } = rootStore.answerStore;
+  const { selectedQuestion } = rootStore.questionStore;
+  const { likeAnswer, dislikeAnswer, ratedAnswers } = rootStore.answerStore;
   const { user } = rootStore.userStore;
   const { openModal } = rootStore.modalStore;
 
   const handleVote = (op: string) => {
-    if (user) {
+    if (user && answerId) {
       if (op === 'like') {
-        if (answerId) {
-          likeAnswer(answerId, questionId!);
-        } else {
-          likeQuestion(questionId!)
-        }
+        likeAnswer(answerId, questionId!);
       } else {
-        if (answerId) {
-          dislikeAnswer(answerId, questionId!);
-        } else {
-          dislikeQuestion(questionId!);
-        }
+        dislikeAnswer(answerId, questionId!);
       }
     } else {
       openModal(<LoginForm />);
@@ -41,14 +33,12 @@ const VoteButton: React.FC<IProps> = ({ buttonSize, iconSize, likes, questionId,
   }
 
   const getVoteColor = (pos: string): 'green' | 'grey' | 'red' => {
-    if (selectedQuestion) {
-      console.log(toJS(questions.get(questionId).liked));
-      const liked = questions.get(questionId).liked;
-      if (liked === null) {
-        return 'grey';
-      } else if (pos === 'top' && liked) {
+    if (selectedQuestion && answerId) {
+      const liked = ratedAnswers.has(answerId) ? ratedAnswers.get(answerId) : null;
+      console.log(liked);
+      if (pos === 'top' && liked) {
         return 'green';
-      } else if (pos === 'bottom' && !liked) {
+      } else if (pos === 'bottom' && liked === false) {
         return 'red';
       }
     }
@@ -68,4 +58,4 @@ const VoteButton: React.FC<IProps> = ({ buttonSize, iconSize, likes, questionId,
   )
 }
 
-export default observer(VoteButton);
+export default observer(AnswerVoteButton);

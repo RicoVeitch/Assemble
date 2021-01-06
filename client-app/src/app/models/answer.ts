@@ -3,7 +3,7 @@ export interface IAnswer {
   questionId?: string;
   message: string;
   likes: number;
-  liked?: boolean;
+  liked?: boolean | null;
   disliked?: boolean;
   displayName?: string;
   username?: string;
