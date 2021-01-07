@@ -12,5 +12,6 @@ namespace Domain
         public virtual ICollection<LikedAnswer> LikedAnswers { get; set; }
         public virtual ICollection<DislikedAnswer> DislikedAnswers { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
+        public virtual ICollection<AnswerReply> AnswersReplies { get; set; }
     }
 }

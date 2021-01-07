@@ -13,5 +13,6 @@ namespace Domain
         public DateTime CreatedAt { get; set; }
         public virtual ICollection<LikedAnswer> LikedAnswers { get; set; }
         public virtual ICollection<DislikedAnswer> DislikedAnswers { get; set; }
+        public virtual ICollection<AnswerReply> Replies { get; set; }
     }
 }

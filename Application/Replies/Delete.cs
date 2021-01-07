@@ -7,7 +7,7 @@ using Application.Errors;
 using System.Net;
 using Application.Interfaces;
 
-namespace Application.Answers
+namespace Application.Replies
 {
     public class Delete
     {
@@ -26,19 +26,14 @@ namespace Application.Answers
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var answer = await _context.Answers.FindAsync(request.Id);
+                var reply = await _context.AnswerReplies.FindAsync(request.Id);
 
-                if (answer == null)
+                if (reply == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { answer = "answer not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { reply = "reply not found" });
                 }
 
-                foreach (var reply in answer.Replies)
-                {
-                    _context.Remove(reply);
-                }
-
-                _context.Remove(answer);
+                _context.Remove(reply);
 
                 var success = await _context.SaveChangesAsync() > 0;
 

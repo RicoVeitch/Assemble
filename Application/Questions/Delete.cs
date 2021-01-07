@@ -35,9 +35,13 @@ namespace Application.Questions
                     throw new RestException(HttpStatusCode.NotFound, new { question = "question not found" });
                 }
 
-                if (question.Answers.Count > 0)
+                foreach (var answer in question.Answers)
                 {
-                    question.Answers.Clear();
+                    foreach (var reply in answer.Replies)
+                    {
+                        _context.Remove(reply);
+                    }
+                    _context.Remove(answer);
                 }
 
                 _context.Remove(question);

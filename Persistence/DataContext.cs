@@ -19,6 +19,7 @@ namespace Persistence
         public DbSet<LikedQuestion> LikedQuestions { get; set; }
         public DbSet<DislikedAnswer> DislikedAnswers { get; set; }
         public DbSet<LikedAnswer> LikedAnswers { get; set; }
+        public DbSet<AnswerReply> AnswerReplies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
