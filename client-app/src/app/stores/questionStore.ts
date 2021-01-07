@@ -133,6 +133,7 @@ export default class QuestionStore {
           question.date = new Date(question.date);
           question.asked = question.username === this.rootStore.userStore.user?.username;
           question.answers = new Map(Object.entries(question.answers));
+          console.log(question);
           this.questions.set(question.id, question);
           this.selectedQuestion = question;
         })

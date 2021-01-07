@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import QuestionDashboard from '../../features/questions/dashboard/QuestionDashboard';
 import { Container } from 'semantic-ui-react';
 import { Route } from 'react-router-dom';
-import QuestionDetails from '../../features/questions/details/QuestionDetails';
 import Notfound from '../common/Notfound';
 import { ToastContainer } from 'react-toastify';
 import QuestionForm from '../../features/questions/form/QuestionForm';
 import ModalContainer from '../common/modals/ModalContainer';
 import NavBar from '../../features/nav/NavBar';
 import { RootStoreContext } from '../stores/rootStore';
+import QApanel from '../../features/questions/details/QApanel';
 
 function App() {
   const rootStore = useContext(RootStoreContext);
@@ -31,7 +31,7 @@ function App() {
       <Container style={{ marginTop: '2em' }}>
         <Route exact path='/' component={QuestionDashboard} />
         {/* <Route path='/home' component={QuestionDashboard} /> */}
-        <Route path='/:id' component={QuestionDetails} />
+        <Route path='/:id' component={QApanel} />
         <Route path='/notfound' component={Notfound} />
         <Route path='/manage' component={QuestionForm} />
         {/* <QuestionDashboard /> */}

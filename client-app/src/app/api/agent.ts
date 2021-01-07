@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { IUser, IUserFormValues } from '../models/user';
 import { IAnswer } from '../models/answer';
 import { ICategory } from '../models/category';
+import { IAnswerReply } from '../models/answerReply';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -62,6 +63,12 @@ const Answers = {
   dislike : (id: string) => requests.put(`/Answer/dislike/${id}`, {})
 }
 
+const AnswerReplies = {
+  create : (reply: IAnswerReply) => requests.post('/AnswerReply', reply),
+  edit : (reply: IAnswerReply) => requests.put(`/AnswerReply/${reply.id}`, reply),
+  delete : (replyId: string) => requests.del(`/AnswerReply/${replyId}`)
+}
+
 const Users = {
   login: (user: IUserFormValues): Promise<IUser> =>  requests.post('/User/login', user),
   register: (user: IUserFormValues): Promise<IUser> => requests.post('/User/register', user),
@@ -76,5 +83,6 @@ export default {
   Questions,
   Users,
   Answers,
-  Categories
+  Categories,
+  AnswerReplies
 };

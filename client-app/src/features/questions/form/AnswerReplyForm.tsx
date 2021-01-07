@@ -3,36 +3,37 @@ import React, { useContext } from 'react';
 import { Form as FinalForm, Field } from 'react-final-form';
 import { Button, Form, Container } from 'semantic-ui-react';
 import TextAreaInput from '../../../app/common/form/TextAreaInput';
-import { IAnswer } from '../../../app/models/answer';
-import { IQuestion } from '../../../app/models/question';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import { v4 as uuid } from 'uuid';
 import { combineValidators, isRequired } from 'revalidate';
 import LoginForm from '../../user/LoginForm';
+import { IAnswerReply } from '../../../app/models/answerReply';
 
 const validator = combineValidators({
   message: isRequired({ message: 'Message is required' }),
 });
 
 interface IProps {
-  question: IQuestion;
-  message?: string;
+  replyId?: string;
   answerId?: string;
+  message?: string;
+  questionId: string
 }
 
-const AnswerForm: React.FC<IProps> = ({ question, message, answerId }) => {
+const AnswerReplyForm: React.FC<IProps> = ({ replyId, answerId, message, questionId }) => {
   const rootStore = useContext(RootStoreContext);
-  const { addAnswer, editAnswer } = rootStore.answerStore;
+  const { addReplyAnswer, editReplyAnswer } = rootStore.answerStore;
   const { closeModal, openModal } = rootStore.modalStore;
   const { user } = rootStore.userStore;
 
   const handleSubmitForm = async (values: any) => {
-    if (user) {
-      if (answerId) {
-        editAnswer(answerId, question.id, values);
+    if (user && answerId) {
+      if (replyId) {
+        const reply: IAnswerReply = { ...values, id: replyId }
+        await editReplyAnswer(reply, answerId, questionId);
       } else {
-        const answer: IAnswer = { ...values, ...user, id: uuid().toString(), questionId: question.id, createdAt: new Date(), replies: [] };
-        addAnswer(answer, question.id);
+        const reply: IAnswerReply = { id: uuid().toString(), answerId: answerId, ...values, createdAt: new Date() }
+        await addReplyAnswer(reply, answerId, questionId);
       }
       closeModal();
     } else {
@@ -53,11 +54,11 @@ const AnswerForm: React.FC<IProps> = ({ question, message, answerId }) => {
               initialValue={message}
               component={TextAreaInput}
               rows={2}
-              placeholder='Add your answer'
+              placeholder='Add your reply'
             />
             <Button
               loading={submitting}
-              content={(message && 'Edit Reply') || 'Add Answer'}
+              content={(replyId && "Edit Reply") || 'Add Reply'}
               labelPosition='left'
               icon='edit'
               disabled={invalid}
@@ -70,4 +71,4 @@ const AnswerForm: React.FC<IProps> = ({ question, message, answerId }) => {
   )
 }
 
-export default observer(AnswerForm);
+export default observer(AnswerReplyForm);

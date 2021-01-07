@@ -43,7 +43,7 @@ namespace Application.Replies
 
                 if (reply == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { answer = "answer not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { reply = "answer not found" });
                 }
 
                 reply.Message = request.Message;

@@ -1,6 +1,7 @@
 import { action, makeObservable, observable, runInAction} from 'mobx';
 import agent from '../api/agent';
 import { IAnswer } from '../models/answer';
+import { IAnswerReply } from '../models/answerReply';
 import { RootStore } from './rootStore';
 
 export default class QuestionStore {
@@ -139,6 +140,58 @@ export default class QuestionStore {
           this.ratedAnswers.set(dislikedAnswers[i], false);
         })
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @action addReplyAnswer = async (reply: IAnswerReply, answerId: string, questionId: string) => {
+    try {
+      await agent.AnswerReplies.create(reply);
+      runInAction(() => {
+        if (this.rootStore.userStore.user) {
+          reply.username = this.rootStore.userStore.user?.username;
+          reply.displayName = this.rootStore.userStore.user?.displayName;
+        }
+        this.rootStore.questionStore.questions.get(questionId).answers.get(answerId).replies.push(reply);
+      })
+    } catch (error) {
+      throw error;
+    }
+    this.rootStore.questionStore.selectQuestion(questionId); // need to run this for qapanel page to update.... change?
+  }
+
+  @action editReplyAnswer = async (reply: IAnswerReply, answerId: string, questionId: string) => {
+    try {
+      await agent.AnswerReplies.edit(reply);
+      runInAction(() => {
+        let replies = this.rootStore.questionStore.questions.get(questionId).answers.get(answerId).replies;
+        for(let i = 0; i < replies.length; i++) {
+          if(replies[i].id === reply.id) {
+            replies[i].message = reply.message;
+            break;
+           }
+        }
+        this.rootStore.questionStore.selectQuestion(questionId);
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @action deleteReplyAnswer = async (replyId: string, questionId: string, answerId: string) => {
+    try {
+      await agent.AnswerReplies.delete(replyId);
+      runInAction(() => {
+        let replies = this.rootStore.questionStore.questions.get(questionId).answers.get(answerId).replies;
+        for(let i = 0; i < replies.length; i++) {
+        if(replies[i].id === replyId) {
+          replies.splice(i, 1);
+          break;
+         }
+        }
+        this.rootStore.questionStore.selectQuestion(questionId);
+      })
     } catch (error) {
       throw error;
     }

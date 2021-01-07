@@ -1,3 +1,5 @@
+import { IAnswerReply } from "./answerReply";
+
 export interface IAnswer {
   id: string;
   questionId?: string;
@@ -8,4 +10,5 @@ export interface IAnswer {
   displayName?: string;
   username?: string;
   createdAt?: Date;
+  replies: IAnswerReply[];
 }

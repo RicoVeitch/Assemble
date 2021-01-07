@@ -17,6 +17,7 @@ namespace Application.Replies
             public string Id { get; set; }
             public string AnswerId { get; set; }
             public string Message { get; set; }
+            public DateTime CreatedAt { get; set; }
         }
         // validator for the command class. Sits inbetween command and handler for mediator.
         public class CommandValidator : AbstractValidator<Command>
@@ -49,7 +50,7 @@ namespace Application.Replies
                     Message = request.Message,
                     Author = user,
                     Answer = answer,
-                    CreatedAt = DateTime.Now,
+                    CreatedAt = request.CreatedAt,
                 };
 
                 user.AnswersReplies.Add(answerReply);
