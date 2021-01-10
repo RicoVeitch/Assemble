@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  ui:
+    build: ./client-app
+    container_name: "ui"
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
+  app:
+    build: .
+    container_name: "app"
+    ports:
+      - "5000:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    depends_on:
+      - db
+  db:
+    build: ./Persistence
+    container_name: "db"
+    ports:
+      - 3306:3306
+    tty: true
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
